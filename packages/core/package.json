@@ -1,0 +1,28 @@
+{
+  "name": "@ui-framework/core",
+  "version": "3.0.0",
+  "description": "@ui-framework/core",
+  "author": "Joe Plahitko <joseph.plahitko@egov.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "dist/index.js",
+	"types": "dist/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "test": "tests"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.ai.org/repository/npm-group/"
+  },
+	"dependencies": {
+		"@ui-framework/utils": "^3.0.0",
+		"@ui-framework/validation": "^3.0.0"
+	},
+  "scripts": {
+		"tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
