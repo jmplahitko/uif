@@ -21,7 +21,7 @@
 		"path-to-regexp": "^3.0.0"
 	},
   "scripts": {
-		"tsc": "tsc",
+		"build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   }
 }

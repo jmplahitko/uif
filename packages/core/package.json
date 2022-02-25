@@ -5,8 +5,11 @@
   "author": "Joe Plahitko <joseph.plahitko@egov.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"exports": {
+		"import": "./dist/ui-framework.es.js",
+		"require": "./dist/ui-framework.cjs.js",
+		"default": "./dist/ui-framework.umd.js"
+	},
   "directories": {
     "dist": "dist",
     "test": "tests"
@@ -17,12 +20,15 @@
   "publishConfig": {
     "registry": "http://registry.ai.org/repository/npm-group/"
   },
-	"dependencies": {
-		"@ui-framework/utils": "^3.0.0",
-		"@ui-framework/validation": "^3.0.0"
+  "dependencies": {
+    "@ui-framework/utils": "^3.0.0",
+    "@ui-framework/validation": "^3.0.0"
+  },
+	"devDependencies": {
+    "vite": "^2.8.4"
 	},
   "scripts": {
-		"tsc": "tsc",
+    "build": "tsc --emitDeclarationOnly && vite build",
     "test": "echo \"Error: run tests from root\" && exit 1"
   }
 }
