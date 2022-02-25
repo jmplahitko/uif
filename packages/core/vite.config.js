@@ -14,6 +14,7 @@ export default defineConfig(({ command, mode }) => {
 			},
 			rollupOptions: {
 				external: [
+					'@ui-framework/ioc',
 					'@ui-framework/observable',
 					'@ui-framework/utils',
 					'@ui-framework/validation',
