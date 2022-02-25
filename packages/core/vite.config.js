@@ -9,6 +9,11 @@ export default defineConfig(({ command, mode }) => {
 				name: 'UIFramework',
 				formats: ['es', 'cjs', 'umd'],
 				fileName: 'ui-framework'
+			},
+			rollupOptions: {
+				external: [
+					'@ui-framework/utils'
+				]
 			}
 		},
 	}
