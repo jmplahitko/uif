@@ -14,8 +14,9 @@ export default defineConfig(({ command, mode }) => {
 			},
 			rollupOptions: {
 				external: [
+					'@ui-framework/observable',
 					'@ui-framework/utils',
-					'@ui-framework/validation'
+					'@ui-framework/validation',
 				],
 				plugins: [
 					// TODO: We may not need these plugins, but keeping them in case we end up needing to bundle any node objects

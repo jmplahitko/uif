@@ -1,0 +1,26 @@
+{
+	"name": "@ui-framework/observable",
+	"version": "3.0.0",
+	"description": "@ui-framework/observable",
+	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
+	"homepage": "",
+	"license": "ISC",
+	"main": "dist/index.js",
+	"directories": {
+		"dist": "dist",
+		"tests": "tests"
+	},
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"registry": "http://registry.ai.org/repository/npm-group/"
+	},
+	"dependencies": {
+		"@ui-framework/utils": "^3.0.0"
+	},
+	"scripts": {
+		"build": "tsc",
+		"test": "echo \"Error: run tests from root\" && exit 1"
+	}
+}
