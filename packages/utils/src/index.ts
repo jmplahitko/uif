@@ -1,3 +1,11 @@
-export function util() {
-	return true;
-}
+export * from './array';
+export * from './async';
+export * from './boolean';
+export * from './dom';
+export * from './factories';
+export * from './function';
+export * from './number';
+export * from './object';
+export * from './parse';
+export * from './predicate';
+export * from './string';

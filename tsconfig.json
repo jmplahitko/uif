@@ -1,17 +1,22 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": true,
-		"noImplicitAny": false,
-		"removeComments": true,
-		"noLib": false,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"target": "es6",
-		"sourceMap": true,
+		"target": "es2015",
+		"module": "esnext",
+		"moduleResolution": "node",
 		"lib": [
-			"es6"
-		]
+			"DOM",
+			"ESNext"
+		],
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"strict": true,
+		"noImplicitAny": false,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"declarationMap": true,
 	},
 	"exclude": [
 		"node_modules"

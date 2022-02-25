@@ -17,6 +17,9 @@
   "publishConfig": {
     "registry": "http://registry.ai.org/repository/npm-group/"
   },
+	"dependencies": {
+		"path-to-regexp": "^3.0.0"
+	},
   "scripts": {
 		"tsc": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"

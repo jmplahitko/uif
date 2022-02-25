@@ -1,5 +1,4 @@
 import { Validator } from '@ui-framework/validation';
-import { util } from '@ui-framework/utils';
+import { isEmpty } from '@ui-framework/utils';
 
-console.log(new Validator());
-console.log(util());
+console.log(isEmpty({}));
