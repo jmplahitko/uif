@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import nodeBuiltIns from 'rollup-plugin-node-builtins';
+import globals from 'rollup-plugin-node-globals';
 
 export default defineConfig(({ command, mode }) => {
 	return {
@@ -12,7 +14,13 @@ export default defineConfig(({ command, mode }) => {
 			},
 			rollupOptions: {
 				external: [
-					'@ui-framework/utils'
+					'@ui-framework/utils',
+					'@ui-framework/validation'
+				],
+				plugins: [
+					// TODO: We may not need these plugins, but keeping them in case we end up needing to bundle any node objects
+					{ ...globals(), name: 'rollup-plugin-node-globals' },
+					{ ...nodeBuiltIns(), name: 'rollup-plugin-node-builtins' }
 				]
 			}
 		},

@@ -1,34 +1,36 @@
 {
-  "name": "@ui-framework/core",
-  "version": "3.0.0",
-  "description": "@ui-framework/core",
-  "author": "Joe Plahitko <joseph.plahitko@egov.com>",
-  "homepage": "",
-  "license": "ISC",
+	"name": "@ui-framework/core",
+	"version": "3.0.0",
+	"description": "@ui-framework/core",
+	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
+	"homepage": "",
+	"license": "ISC",
 	"exports": {
 		"import": "./dist/ui-framework.es.js",
 		"require": "./dist/ui-framework.cjs.js",
 		"default": "./dist/ui-framework.umd.js"
 	},
-  "directories": {
-    "dist": "dist",
-    "test": "tests"
-  },
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "registry": "http://registry.ai.org/repository/npm-group/"
-  },
-  "dependencies": {
-    "@ui-framework/utils": "^3.0.0",
-    "@ui-framework/validation": "^3.0.0"
-  },
-	"devDependencies": {
-    "vite": "^2.8.4"
+	"directories": {
+		"dist": "dist",
+		"test": "tests"
 	},
-  "scripts": {
-    "build": "tsc --emitDeclarationOnly && vite build",
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  }
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"registry": "http://registry.ai.org/repository/npm-group/"
+	},
+	"dependencies": {
+		"@ui-framework/utils": "^3.0.0",
+		"@ui-framework/validation": "^3.0.0"
+	},
+	"devDependencies": {
+		"vite": "^2.8.4",
+		"rollup-plugin-node-builtins": "^2.1.2",
+		"rollup-plugin-node-globals": "^1.4.0"
+	},
+	"scripts": {
+		"build": "tsc --emitDeclarationOnly && vite build",
+		"test": "echo \"Error: run tests from root\" && exit 1"
+	}
 }
