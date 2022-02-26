@@ -1,7 +1,7 @@
 {
-  "name": "@ui-framework/validation",
+  "name": "@ui-framework/storage",
   "version": "3.0.0",
-  "description": "@ui-framework/validation",
+  "description": "@ui-framework/storage",
   "author": "Joe Plahitko <joseph.plahitko@egov.com>",
 	"homepage": "",
 	"license": "ISC",

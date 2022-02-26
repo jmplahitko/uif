@@ -10,6 +10,7 @@ import observable from '@ui-framework/observable';
 import { isEmpty } from '@ui-framework/utils';
 import { Validator } from '@ui-framework/validation';
 import { EventBus } from '@ui-framework/eventing';
+import { NavigationProvider } from '@ui-framework/navigation';
 
 export interface ITestable {
 	test(): boolean;
@@ -22,6 +23,7 @@ console.log(new Validator<unknown>());
 const container = new Container();
 container.register('myValidator', Validator);
 container.register('myEvents', EventBus);
+container.register('myNavigationProvider', NavigationProvider);
 
 
 ///// http

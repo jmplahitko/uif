@@ -1,8 +1,8 @@
 {
-  "name": "@ui-framework/validation",
-  "version": "3.0.0",
-  "description": "@ui-framework/validation",
-  "author": "Joe Plahitko <joseph.plahitko@egov.com>",
+	"name": "@ui-framework/navigation",
+	"version": "3.0.0",
+	"description": "@ui-framework/navigation",
+	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
 	"homepage": "",
 	"license": "ISC",
 	"main": "dist/index.js",
