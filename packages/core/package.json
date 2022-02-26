@@ -21,6 +21,7 @@
 		"registry": "http://registry.ai.org/repository/npm-group/"
 	},
 	"dependencies": {
+		"@ui-framework/eventing": "^3.0.0",
 		"@ui-framework/ioc": "^3.0.0",
 		"@ui-framework/http": "^3.0.0",
 		"@ui-framework/observable": "^3.0.0",

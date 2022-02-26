@@ -14,6 +14,7 @@ export default defineConfig(({ command, mode }) => {
 			},
 			rollupOptions: {
 				external: [
+					'@ui-framework/eventing',
 					'@ui-framework/ioc',
 					'@ui-framework/http',
 					'@ui-framework/http/fetch',

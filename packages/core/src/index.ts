@@ -9,6 +9,7 @@ import { ResponseParsingStrategyFactory } from '@ui-framework/http/fetch/respons
 import observable from '@ui-framework/observable';
 import { isEmpty } from '@ui-framework/utils';
 import { Validator } from '@ui-framework/validation';
+import { EventBus } from '@ui-framework/eventing';
 
 export interface ITestable {
 	test(): boolean;
@@ -20,7 +21,10 @@ console.log(new Validator<unknown>());
 
 const container = new Container();
 container.register('myValidator', Validator);
+container.register('myEvents', EventBus);
 
+
+///// http
 class GetMe {};
 class SaveMe {};
 const httpProvider = new HttpProvider();
@@ -44,3 +48,7 @@ const request = httpRequestFactory<GetMe>({
 });
 
 console.log(request);
+
+if (request) {
+	httpService(request);
+}
