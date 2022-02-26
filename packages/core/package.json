@@ -22,6 +22,7 @@
 	},
 	"dependencies": {
 		"@ui-framework/ioc": "^3.0.0",
+		"@ui-framework/http": "^3.0.0",
 		"@ui-framework/observable": "^3.0.0",
 		"@ui-framework/utils": "^3.0.0",
 		"@ui-framework/validation": "^3.0.0"

@@ -1,1 +1,1 @@
-export { createPipe } from './createPipe';
+export { createPipe, Operator, PromiseReject, PromiseResolve } from './createPipe';

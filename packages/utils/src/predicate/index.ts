@@ -21,4 +21,5 @@ export { default as isString } from './isString';
 export { default as isTypedArray } from './isTypedArray';
 export { default as isUndefined } from './isUndefined';
 export { default as isURLSearchParams } from './isURLSearchParams';
+export { default as isUrl } from './isUrl';
 export { default as isWindow } from './isWindow';

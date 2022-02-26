@@ -1,6 +1,7 @@
 export { default as camelize } from './camelize';
 export { default as camelToDash } from './camelToDash';
 export { default as capitalize } from './capitalize';
+export { default as compilePath } from './compilePath';
 export { default as concat } from './concat';
 export { default as dashToCamel } from './dashToCamel';
 export { default as leftPad } from './leftPad';
