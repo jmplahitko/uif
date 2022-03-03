@@ -2,5 +2,11 @@
   "packages": [
     "packages/*"
   ],
-  "version": "3.0.0"
+  "version": "3.0.0",
+	"command": {
+		"publish": {
+			"ignoreChanges": ["*.md", "packages/app/*"],
+			"registry": "http://registry.ai.org/repository/npm-group/"
+		}
+	}
 }
