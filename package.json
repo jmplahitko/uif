@@ -1,15 +1,16 @@
 {
-  "private": true,
-  "devDependencies": {
-    "@types/node": "^17.0.21",
-    "lerna": "^4.0.0",
-    "typescript": "^4.5.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
-  },
+	"private": true,
+	"devDependencies": {
+		"@types/node": "^17.0.21",
+		"lerna": "^4.0.0",
+		"typescript": "^4.5.5"
+	},
+	"repository": {
+		"type": "git",
+		"url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
+	},
 	"scripts": {
-		"build": "lerna run build"
+		"build": "lerna run build",
+		"init": "lerna clean --yes && lerna bootstrap && npm run build"
 	}
 }
