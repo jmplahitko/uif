@@ -17,6 +17,10 @@
   "publishConfig": {
     "registry": "http://registry.ai.org/repository/npm-group/"
   },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
+  },
 	"dependencies": {
 		"path-to-regexp": "^3.0.0"
 	},

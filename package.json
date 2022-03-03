@@ -5,6 +5,10 @@
     "lerna": "^4.0.0",
     "typescript": "^4.5.5"
   },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
+  },
 	"scripts": {
 		"build": "lerna run build"
 	}

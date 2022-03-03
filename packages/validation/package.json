@@ -20,6 +20,10 @@
 	"dependencies": {
 		"@ui-framework/utils": "^3.0.0"
 	},
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
+  },
 	"scripts": {
 		"build": "tsc",
 		"test": "echo \"Error: run tests from root\" && exit 1"
