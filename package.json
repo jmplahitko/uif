@@ -11,6 +11,14 @@
 	},
 	"scripts": {
 		"build": "lerna run build",
+		"build:eventing": "lerna run build --scope=@ui-framework/eventing",
+		"build:http": "lerna run build --scope=@ui-framework/http",
+		"build:ioc": "lerna run build --scope=@ui-framework/ioc",
+		"build:navigation": "lerna run build --scope=@ui-framework/navigation",
+		"build:observable": "lerna run build --scope=@ui-framework/observable",
+		"build:storage": "lerna run build --scope=@ui-framework/storage",
+		"build:utils": "lerna run build --scope=@ui-framework/utils",
+		"build:validation": "lerna run build --scope=@ui-framework/validation",
 		"init": "lerna clean --yes && lerna bootstrap && npm run build"
 	}
 }
