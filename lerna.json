@@ -6,7 +6,8 @@
 	"command": {
 		"publish": {
 			"ignoreChanges": ["*.md", "packages/app/*"],
-			"registry": "http://registry.ai.org/repository/npm-group/"
+			"registry": "http://registry.ai.org/repository/npm-group/",
+			"message": "Bumped version to %v"
 		}
 	}
 }
