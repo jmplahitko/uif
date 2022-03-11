@@ -41,6 +41,11 @@ export declare type ResponseParsingStrategy = {
 	type: ResponseContentType;
 }
 
+export { IHttpInterceptor } from './IHttpInterceptor';
+export { IHttpProvider } from './IHttpProvider';
+export { IHttpRequestFactory } from './IHttpRequestFactory';
+export { IHttpService } from './IHttpService';
+
 export { default as ContentMimeType } from './ContentMimeType';
 export { default as HttpError } from './HttpError';
 export { HttpMethod } from './HttpMethod';
