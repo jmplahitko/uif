@@ -1,6 +1,6 @@
 import { IAppSettings } from './IAppSettings';
 
-export declare type Settings = {
+export type Settings = {
 	debug: boolean;
 	appSettings: IAppSettings
 }

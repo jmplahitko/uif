@@ -6,14 +6,13 @@
 	"homepage": "",
 	"license": "ISC",
 	"exports": {
-		"import": "./dist/ui-framework.es.js",
-		"require": "./dist/ui-framework.cjs.js",
-		"default": "./dist/ui-framework.umd.js"
+		".": {
+			"import": "./dist/ui-framework.es.js",
+			"require": "./dist/ui-framework.cjs.js",
+			"default": "./dist/ui-framework.umd.js"
+		}
 	},
-	"directories": {
-		"dist": "dist",
-		"test": "tests"
-	},
+	"types": "./dist/index.d.ts",
 	"files": [
 		"dist"
 	],
@@ -42,7 +41,8 @@
 		"rollup-plugin-node-globals": "^1.4.0"
 	},
 	"scripts": {
-		"build": "tsc --emitDeclarationOnly && vite build",
+		"build": "vite build && tsc",
+		"build:types": "tsc",
 		"test": "echo \"Error: run tests from root\" && exit 1"
 	}
 }

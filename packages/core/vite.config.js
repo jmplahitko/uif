@@ -6,11 +6,12 @@ import globals from 'rollup-plugin-node-globals';
 export default defineConfig(({ command, mode }) => {
 	return {
 		build: {
+			minify: false,
 			lib: {
 				entry: path.resolve(__dirname, 'src/index.ts'),
 				name: 'UIFramework',
 				formats: ['es', 'cjs', 'umd'],
-				fileName: 'ui-framework'
+				fileName: 'ui-framework',
 			},
 			rollupOptions: {
 				external: [

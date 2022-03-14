@@ -1,12 +1,14 @@
 {
 	"extends": "../../tsconfig.json",
+	"files": ["./src/index.ts"],
 	"compilerOptions": {
 		"types": ["vite/client"],
-		"outDir": "./dist",
-		"isolatedModules": true
+		"outDir": "dist",
+		"isolatedModules": true,
+		"emitDeclarationOnly": true,
+		"declaration": true,
 	},
 	"include": [
-		"./src",
 		"../global.d.ts"
 	]
 }
