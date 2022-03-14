@@ -1,0 +1,29 @@
+{
+	"name": "@ui-framework/app",
+	"description": "Test app and static doc site",
+	"version": "3.0.0",
+	"dependencies": {
+		"@ui-framework/core": "^3.0.0",
+		"@ui-framework/eventing": "^3.0.0",
+		"@ui-framework/ioc": "^3.0.0",
+		"@ui-framework/http": "^3.0.0",
+		"@ui-framework/navigation": "^3.0.0",
+		"@ui-framework/observable": "^3.0.0",
+		"@ui-framework/storage": "^3.0.0",
+		"@ui-framework/utils": "^3.0.0",
+		"@ui-framework/validation": "^3.0.0",
+		"vue": "^3.0.5"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^1.1.5",
+		"@vue/compiler-sfc": "^3.0.5",
+		"vite": "^2.8.4",
+		"rollup-plugin-node-builtins": "^2.1.2",
+		"rollup-plugin-node-globals": "^1.4.0"
+	},
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
+	}
+}
