@@ -1,4 +1,4 @@
-import { IActionPlan } from '../dispatcher/actions/IActionPlan';
+import { IActionPlan } from '../commands/ICommandHooks';
 import { ServiceFactory } from '@ui-framework/ioc';
 
 export type TInjectable<T> = Static<T> | ServiceFactory<T>;
