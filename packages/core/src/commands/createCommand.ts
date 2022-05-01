@@ -1,5 +1,5 @@
 import { RequestDetails } from '@ui-framework/http';
-import { createPipe, Operator } from '@ui-framework/utils';
+import { createPipe, isUndefined, Operator } from '@ui-framework/utils';
 
 import { IAppContext } from '../IAppContext';
 import { ICommand } from './ICommand';
@@ -13,7 +13,7 @@ export function createCommand<TPayload, TResponseBody = null, TRequestBody = TPa
 	commandHandlers.push(function initHandler(ctx, next, done, fail) {
 		serviceBus.init();
 
-		init ?? init(
+		!isUndefined(init) && init(
 			ctx,
 			function _next() {
 				next(ctx);
@@ -30,7 +30,7 @@ export function createCommand<TPayload, TResponseBody = null, TRequestBody = TPa
 	commandHandlers.push(function fetchHandler(ctx, next, done, fail) {
 		let requestDetails;
 
-		willFetch ?? willFetch(
+		!isUndefined(willFetch) && willFetch(
 			ctx,
 			async function _next(requestDetails: RequestDetails<TRequestBody>) {
 				await serviceBus.fetch(requestDetails); // what are we doing here?
@@ -49,7 +49,7 @@ export function createCommand<TPayload, TResponseBody = null, TRequestBody = TPa
 	commandHandlers.push(function storeHandler(ctx, next, done, fail) {
 		let requestDetails;
 
-		willFetch ?? willFetch(
+		!isUndefined(willStore) && willStore(
 			ctx,
 			function _next() {
 				next(ctx);
