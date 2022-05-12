@@ -6,7 +6,7 @@ export type ServiceFactory<T> = (container: Container) => Promise<T>|T;
 export type ServiceKey = string | symbol;
 export type InjectableStatic<T> = Static<T> & { $inject?: ServiceKey[] };
 export type InjectableFactory<T> = {
-	(services?: any[]): (Promise<T>|T);
+	(...services: any[]): (Promise<T>|T);
 	$inject?: ServiceKey[];
 };
 export type Injectable<T> = InjectableStatic<T> | InjectableFactory<T>;

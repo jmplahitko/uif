@@ -1,6 +1,4 @@
-declare global {
-	var __DEBUG__: boolean;
-};
+var __DEBUG__: boolean;
 
 // This stuff needs to be moved to Types package when it's created.
 

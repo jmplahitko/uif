@@ -4,7 +4,8 @@ import { ResponseParsingStrategyFactory } from '@ui-framework/http/fetch/respons
 import { Container, Lifespan, ReuseScope } from '@ui-framework/ioc';
 
 import { platformFactory } from '../platform/platformFactory';
-import { SettingsProvider } from '../settings/SettingsProvider';
+import { createSettingsProvider } from '../settings/createSettingsProvider';
+import { settingsFactory } from '../settings/settingsFactory';
 
 const root = new Container();
 const configurations = root.spawn('@configurations');
@@ -14,28 +15,32 @@ const readyCallbacks = root.spawn('@readyCallbacks');
 const modules = services.spawn('@modules');
 const plugins = services.spawn('@plugins');
 
+/** root dependencies */
 root.registerFactory('Platform', platformFactory)
-	.withLifespan(Lifespan.transient)
 	.asDurable()
-	.reusedWithin(ReuseScope.container);
+	.reusedWithin(ReuseScope.container)
+	.withLifespan(Lifespan.transient);
 
-root.registerFactory('ISettingsProvider', () => new SettingsProvider(globalThis.__DEBUG__))
+root.register('ISettingsProvider', createSettingsProvider)
 	.asDurable();
 
 root.register('IHttpProvider', HttpProvider)
 	.asDurable();
 
-root.register('IResponseParsingStrategyFactory', ResponseParsingStrategyFactory,
-	['Platform']);
+root.register('IResponseParsingStrategyFactory', ResponseParsingStrategyFactory)
+	.reusedWithin(ReuseScope.container)
+	.withLifespan(Lifespan.transient);
 
-root.registerFactory('IHttpService', async (container) => {
-	const provider: IHttpProvider = await container.resolve('IHttpProvider');
-	const responseParsingStrategyFactory = await container.resolve('IResponseParsingStrategyFactory');
+// We store these services in root because we want to use it during bootstrapping, and services will not
+// be available at that time.
+root.register('IHttpService', createHttpService)
+	.asDurable();
 
-	return createHttpService(provider, responseParsingStrategyFactory);
-}).asDurable();
-
-
+/** service dependencies */
+services.register('Settings', settingsFactory)
+	.asDurable()
+	.reusedWithin(ReuseScope.container)
+	.withLifespan(Lifespan.transient);
 
 export {
 	configurations,

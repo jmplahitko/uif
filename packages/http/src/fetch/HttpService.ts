@@ -15,6 +15,7 @@ function isJSONRequest(data: any): boolean {
 	return !isBufferArray(data) && !isBlob(data) && !isFormData(data) && !isURLSearchParams(data);
 }
 
+createHttpService.$inject = ['IHttpProvider', 'IResponseParsingStrategyFactory'];
 export function createHttpService(provider: IHttpProvider, responseParsingStrategyFactory: IResponseParsingStrategyFactory): IHttpService {
 	const prepareResponse = prepareResponseDetails(responseParsingStrategyFactory);
 
