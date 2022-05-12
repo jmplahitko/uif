@@ -1,5 +1,5 @@
 import { IHttpService } from '@ui-framework/http';
-import { CreateAppOptions } from '.';
+import { StartupOptions } from '.';
 import { IAppSettings } from '../settings/IAppSettings';
 import { ISettingsProvider } from '../settings/ISettingsProvider';
 
@@ -12,7 +12,7 @@ import {
 	services,
 } from './containers';
 
-export async function start(options: CreateAppOptions) {
+export async function start(options: StartupOptions) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const settingsUrl = options?.settingsUrl || 'settings.json';
@@ -24,6 +24,8 @@ export async function start(options: CreateAppOptions) {
 				IHttpService
 			];
 
+			// This needs moved to a method on SettingsProvider.
+			// Would be nice to be able to have plugins and methods fetch their own settings if needed.
 			const { data } = await httpService.get<IAppSettings>(settingsUrl);
 			for (let key in data) {
 				settingsProvider.addSetting(key as keyof IAppSettings, data[key]);

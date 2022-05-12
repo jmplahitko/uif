@@ -1,4 +1,4 @@
-export type CreateAppOptions = {
+export type StartupOptions = {
 	el: string,
 	settingsUrl?: string;
 	splash?: (el: HTMLElement) => void

@@ -1,8 +1,7 @@
 import { IModule } from './modules/IModule';
 import { IAppHost } from './IAppHost';
 import {
-	CreateAppOptions,
-	ready,
+	StartupOptions,
 	registerConfiguration,
 	registerModule,
 	registerPlugin,
@@ -14,7 +13,7 @@ import { IPlugin } from './plugins/IPlugin';
 
 let started = false;
 
-export function createAppHost(options: CreateAppOptions): IAppHost {
+export function createAppHost(options: StartupOptions): IAppHost {
 	const hostEl: HTMLElement | null = document.querySelector(options.el);
 	if (hostEl === null) {
 		throw new ReferenceError(`[app]: Host Element "${options.el}" couldn't be found.`);

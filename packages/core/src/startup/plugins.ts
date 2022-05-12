@@ -2,11 +2,9 @@ import { IModule } from '../modules/IModule';
 import { modules, services, root } from './containers';
 import { register as registerConfiguration } from './configurations';
 import { register as registerReadyCallback } from './ready';
+import { IPlugin } from '../plugins/IPlugin';
 
-export function register(module: IPlugin<any>) {
-	modules.registerFactory(module.name, async (container) => {
-		return Promise.resolve(module);
-	});
+export function register(module: IPlugin) {
 
 };
 
