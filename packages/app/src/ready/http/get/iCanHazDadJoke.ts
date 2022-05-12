@@ -1,6 +1,7 @@
 import { HttpMethod, IHttpService } from '@ui-framework/http';
 import { RequestMode} from '@ui-framework/http/fetch';
 
+iCanHazDadJoke.$inject = ['IHttpService'];
 export async function iCanHazDadJoke(httpService: IHttpService) {
 	const url = 'https://icanhazdadjoke.com/';
 
