@@ -1,6 +1,6 @@
 
 import { Container } from './Container';
-import { AsyncServiceFactory, DisposalStrategy, ServiceFactory } from './index';
+import { DisposalStrategy, ServiceFactory, ServiceKey } from './index';
 import { ReuseScope } from './ReuseScope';
 import { Lifespan } from './Lifespan';
 import { ServiceEntryDisposalBroker } from './ServiceEntryDisposalBroker';
@@ -12,13 +12,13 @@ export class ServiceEntry<T> {
 	public reuse: ReuseScope = ReuseScope.default;
 
 	private _container: Container;
-	private _dependencies: (string|symbol)[];
-	private _factory: ServiceFactory<T> | AsyncServiceFactory<T>;
+	private _dependencies: ServiceKey[];
+	private _factory: ServiceFactory<T>;
 	private _instance: T | null | undefined = null;
 	private _pendingInstance: Promise<T> | null = null;
 	private _disposalStrategy: DisposalStrategy<T> | null = null;
 
-	constructor(entry: { container: Container; dependencies?: (string|symbol)[]; factory: ServiceFactory<T>|AsyncServiceFactory<T>; instance?: T | null }) {
+	constructor(entry: { container: Container; dependencies?: ServiceKey[]; factory: ServiceFactory<T>; instance?: T | null }) {
 		this._container = entry.container;
 		this._dependencies = entry.dependencies || [];
 		this._factory = entry.factory;

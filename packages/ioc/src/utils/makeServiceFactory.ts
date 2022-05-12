@@ -1,7 +1,7 @@
-import { AsyncServiceFactory } from '../index';
+import { ServiceFactory, ServiceKey } from '../index';
 import { Container } from '../Container';
 
-export default function makeAsyncServiceFactory<T>(Ctor: Static<T>, dependencies: (string|symbol)[]): AsyncServiceFactory<T> {
+export default function makeServiceFactory<T>(Ctor: Static<T>, dependencies: ServiceKey[]): ServiceFactory<T> {
 	return function(container: Container) {
 		return new Promise((resolve, reject) => {
 			try {

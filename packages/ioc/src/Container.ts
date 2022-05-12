@@ -1,15 +1,16 @@
-import { AsyncServiceFactory, ServiceFactory } from './index';
+import { Injectable, InjectableFactory, InjectableStatic, ServiceFactory, ServiceKey } from './index';
 
-import makeAsyncServiceFactory from './utils/makeAsyncServiceFactory';
+import makeServiceFactory from './utils/makeServiceFactory';
 import { ReuseScope } from './ReuseScope';
 import { ServiceEntry } from './ServiceEntry';
 import { ServiceEntryConfigurer } from './ServiceEntryConfigurer';
 import { isEmpty, leftPivot, rightPivot } from '@ui-framework/utils';
+import makeFactory from './utils/makeFactory';
 
 export class Container {
 	private _parent: Container | null = null;
-	private _services: Map<string|symbol, ServiceEntry<any>> = new Map();
-	private _childContainers: Map<string|symbol, Container> = new Map();
+	private _services: Map<ServiceKey, ServiceEntry<any>> = new Map();
+	private _childContainers: Map<ServiceKey, Container> = new Map();
 	private _isDisposing: boolean = false;
 
 	constructor(config?: { parent: Container }) {
@@ -21,7 +22,7 @@ export class Container {
 			container: this,
 			dependencies: [],
 			instance: this,
-			factory: makeAsyncServiceFactory<Container>(this.constructor as Static<Container>, [])
+			factory: makeServiceFactory<Container>(this.constructor as Static<Container>, [])
 		});
 
 		// We need to ensure that the Container ServiceEntry is durable, so it doesn't get disposed of.
@@ -35,7 +36,7 @@ export class Container {
 		return this._parent;
 	}
 
-	public spawn(name: string|symbol): Container {
+	public spawn(name: ServiceKey): Container {
 		let container = new Container({ parent: this });
 
 		this._childContainers.set(name, container);
@@ -57,7 +58,7 @@ export class Container {
 		this._isDisposing = false;
 	}
 
-	public eject(name: string|symbol): void {
+	public eject(name: ServiceKey): void {
 		if (this._services.has(name)) {
 			let entry = this._services.get(name);
 			if (entry?.isEjectable) {
@@ -72,13 +73,15 @@ export class Container {
 		}
 	}
 
-	public register<T>(name: string|symbol, type: Static<T>, dependencies: (string|symbol)[] = []): ServiceEntryConfigurer<T> {
+	public register<T>(name: ServiceKey, type: Injectable<T>, dependencies: ServiceKey[] = type.$inject ?? []): ServiceEntryConfigurer<T> {
 		if (type instanceof Container) {
 			throw new TypeError('Container.register: Cannot register a Container instance');
 		}
 
 		let entry = new ServiceEntry<T>({
-			factory: makeAsyncServiceFactory<T>(type, dependencies),
+			factory: type.constructor
+				? makeServiceFactory<T>(type as InjectableStatic<T>, dependencies)
+				: makeFactory<T>(type as InjectableFactory<T>, dependencies),
 			container: this,
 			dependencies
 		});
@@ -88,7 +91,7 @@ export class Container {
 		return new ServiceEntryConfigurer(entry);
 	}
 
-	public registerFactory<T>(name: string|symbol, factory: ServiceFactory<T> | AsyncServiceFactory<T>): ServiceEntryConfigurer<T> {
+	public registerFactory<T>(name: ServiceKey, factory: ServiceFactory<T>): ServiceEntryConfigurer<T> {
 		let entry = new ServiceEntry<T>({
 			container: this,
 			factory
@@ -99,13 +102,13 @@ export class Container {
 		return new ServiceEntryConfigurer(entry);
 	}
 
-	public async resolve(name: string|symbol): Promise<any> {
+	public async resolve(name: ServiceKey): Promise<any> {
 		return await this._resolveImpl(name, true);
 	}
 
-	public async resolveAll(): Promise<Record<string|symbol, any>> {
+	public async resolveAll(): Promise<Record<ServiceKey, any>> {
 		//
-		let resolved: Record<string|symbol, any> = {};
+		let resolved: Record<ServiceKey, any> = {};
 		// Ignore the container in the output of this method because
 		// it's redundant, since the caller already has access to the container.
 		let entries = leftPivot(Array.from(this._services)
@@ -123,25 +126,25 @@ export class Container {
 		return resolved;
 	}
 
-	public resolveList(names: (string|symbol)[]): Promise<any[]> {
+	public resolveList(names: ServiceKey[]): Promise<any[]> {
 		return Promise.all(names.map((name) => this.resolve(name)));
 	}
 
-	public getContainer(name: string|symbol): Container | null {
+	public getContainer(name: ServiceKey): Container | null {
 		let container = this._childContainers.get(name) ?? null;
 
 		return container;
 	}
 
-	public has(name: string|symbol): boolean {
+	public has(name: ServiceKey): boolean {
 		return this._services.has(name);
 	}
 
-	protected __tryGetServiceEntry(name: string|symbol): ServiceEntry<any> | null {
+	protected __tryGetServiceEntry(name: ServiceKey): ServiceEntry<any> | null {
 		return this._services.get(name) ?? null;
 	}
 
-	private _getEntry(name: string|symbol, throwIfMissing: boolean): ServiceEntry<any> | null {
+	private _getEntry(name: ServiceKey, throwIfMissing: boolean): ServiceEntry<any> | null {
 		let container: Container = this;
 		let entry = container.__tryGetServiceEntry(name);
 
@@ -163,7 +166,7 @@ export class Container {
 		return entry;
 	}
 
-	private _registerImpl<T>(name: string|symbol, entry: ServiceEntry<T>): ServiceEntry<T> {
+	private _registerImpl<T>(name: ServiceKey, entry: ServiceEntry<T>): ServiceEntry<T> {
 		// We want to check that an entry exists before setting it so we don't override original entries.
 		// In the event there is a duplicate registration of a service, we still want to return an entry so that calls to the fluent configuration
 		// api can still happen.
@@ -178,7 +181,7 @@ export class Container {
 		}
 	}
 
-	private async _resolveImpl(name: string|symbol, throwIfMissing: boolean): Promise<any> {
+	private async _resolveImpl(name: ServiceKey, throwIfMissing: boolean): Promise<any> {
 		let entry = this._getEntry(name, throwIfMissing);
 		let instance;
 
@@ -189,13 +192,13 @@ export class Container {
 		return instance;
 	}
 
-	private _setServiceEntry(name: string|symbol, entry: ServiceEntry<any>): ServiceEntry<any> {
+	private _setServiceEntry(name: ServiceKey, entry: ServiceEntry<any>): ServiceEntry<any> {
 		this._services.set(name, entry);
 
 		return entry;
 	}
 
-	static _throwMissing(name: string|symbol) {
+	static _throwMissing(name: ServiceKey) {
 		throw new Error(`${String(name)} not found`);
 	}
 }
