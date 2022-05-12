@@ -6,6 +6,7 @@ export { default as isBlankObject } from './isBlankObject';
 export { default as isBlob } from './isBlob';
 export { default as isBoolean } from './isBoolean';
 export { default as isBufferArray } from './isBufferArray';
+export { default as isClass } from './isClass';
 export { default as isDate } from './isDate';
 export { default as isEmpty } from './isEmpty';
 export { default as isFormData } from './isFormData';

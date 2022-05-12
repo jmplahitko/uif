@@ -4,7 +4,7 @@ import makeServiceFactory from './utils/makeServiceFactory';
 import { ReuseScope } from './ReuseScope';
 import { ServiceEntry } from './ServiceEntry';
 import { ServiceEntryConfigurer } from './ServiceEntryConfigurer';
-import { isEmpty, leftPivot, rightPivot } from '@ui-framework/utils';
+import { isEmpty, isClass, leftPivot, rightPivot } from '@ui-framework/utils';
 import makeFactory from './utils/makeFactory';
 
 export class Container {
@@ -79,7 +79,7 @@ export class Container {
 		}
 
 		let entry = new ServiceEntry<T>({
-			factory: type.constructor
+			factory: isClass(type)
 				? makeServiceFactory<T>(type as InjectableStatic<T>, dependencies)
 				: makeFactory<T>(type as InjectableFactory<T>, dependencies),
 			container: this,
