@@ -1,106 +1,62 @@
-import { v4 as uuid } from 'uuid';
-import { ISettingsProvider } from './settings/ISettingsProvider';
-import { IAppSettings } from './settings/IAppSettings';
-import { IHttpService } from '@ui-framework/http';
 import { IModule } from './modules/IModule';
 import { IAppHost } from './IAppHost';
+import {
+	CreateAppOptions,
+	ready,
+	registerConfiguration,
+	registerModule,
+	registerPlugin,
+	registerReadyCallback,
+	start
+ } from './startup';
+import { InjectableFactory } from '@ui-framework/ioc';
+import { IPlugin } from './plugins/IPlugin';
 
-import { createRootContainer } from './createRootContainer';
+let started = false;
 
-export type CreateAppOptions = {
-	debug?: boolean;
-	settingsUrl?: string;
-}
-
-export async function createAppHost(domSelector: string, options?: CreateAppOptions): Promise<IAppHost> {
-	const debug = options?.debug ?? false;
-	const settingsUrl = options?.settingsUrl || 'settings.json';
-
-
-	// TODO: This should probably be moved to a configurer.
-	const rootContainer = createRootContainer(debug);
-
-	const hostedServices = rootContainer.spawn('$$hostedServices');
-	const configFns = rootContainer.spawn('$$configFns');
-	const readyFns = hostedServices.spawn('$$readyFns');
-
-	return new Promise(async (resolve, reject) => {
-		const _hostEl: HTMLElement | null = document.querySelector(domSelector);
-
-		// We need a valid host element to attach a splash page while we load the app. This will allow us to paint quickly and provide
-		// user with adequate feedback.
-		if (_hostEl === null) {
-			const err = new ReferenceError(`[app]: Host Element "${domSelector}" couldn't be found.`);
-			reject(err);
-			return;
-		} else {
-			// TODO: Attach splash
-		}
-
-		// We try to fetch settings. For now, if we don't receive any, we fail closed.
-		const settingsProvider: ISettingsProvider = await rootContainer.resolve('ISettingsProvider');
-		const httpService: IHttpService = await rootContainer.resolve('IHttpService');
-		// TODO: May want to fail open here?
+export function createAppHost(options: CreateAppOptions): IAppHost {
+	const hostEl: HTMLElement | null = document.querySelector(options.el);
+	if (hostEl === null) {
+		throw new ReferenceError(`[app]: Host Element "${options.el}" couldn't be found.`);
+	} else {
 		try {
-			const { data } = await httpService.get<IAppSettings>(settingsUrl);
-			for (let key in data) {
-				settingsProvider.addSetting(key as keyof IAppSettings, data[key]);
+			if (options.splash) {
+				options.splash(hostEl)
 			}
-		} catch (err) {
-			reject(err);
-			return;
+		} catch (e) {
+			console.log(e);
 		}
+	}
 
-		// At this point, we are confident we can bootstrap the app.
-		const appHost: IAppHost = {
+	const appHost = {
+		configure(configuration: InjectableFactory<any>) {
+			registerConfiguration(configuration);
+		},
 
-			module<T>(module: IModule<T>) {
-				return appHost;
-			},
+		module<T>(module: IModule<T>) {
+			registerModule(module);
+		},
 
-			splash(factory: (el: Element) => void) {
-				const domHost = document.querySelector(domSelector);
+		plugin(plugin: IPlugin) {
+			registerPlugin(plugin);
+		},
 
-				if (domHost) {
-					factory(domHost)
+		ready(readyCallback: InjectableFactory<any>) {
+			registerReadyCallback(readyCallback);
+		},
+
+		async start() {
+			return new Promise(async (resolve, reject) => {
+				if (started) {
+					// TODO - we don't want start to be called more than once.
+					reject();
+				} else {
+					started = true;
+					resolve(start(options));
 				}
+			});
+		},
+	};
 
-				return appHost;
-			},
-
-			configure(configFn: (...providers: Array<any>) => void, dependencies: Array<string | symbol> = []) {
-				configFns.registerFactory(uuid(), async (container) => {
-					const deps = await container.resolveList(dependencies);
-					return Promise.resolve(configFn(...deps));
-				});
-
-				return appHost;
-			},
-
-			ready(readyFn: (...services: Array<any>) => void, dependencies: Array<string | symbol> = []) {
-				readyFns.registerFactory(uuid(), async (container) => {
-					const deps = await container.resolveList(dependencies);
-					return Promise.resolve(readyFn(...deps));
-				});
-
-				return appHost;
-			},
-
-			async start() {
-				// TODO: Inject modules
-
-				// Configure the app's providers
-				const configs = await configFns.resolveAll();
-				await Promise.all(Object.values(configs));
-
-				// TODO: Bootstrap the app host and request the $rootEl from the container
-
-				// Invoke ready() handlers
-				const readies = await readyFns.resolveAll();
-				await Promise.all(Object.values(readies));
-			},
-		}
-
-		resolve(appHost);
-	});
+	return appHost;
 }

@@ -98,6 +98,8 @@ const textTypes = [
 ];
 
 export class ResponseParsingStrategyFactory implements IResponseParsingStrategyFactory {
+	static $inject = ['Platform'];
+
 	private _platform: Platform;
 
 	constructor(platform: Platform) {

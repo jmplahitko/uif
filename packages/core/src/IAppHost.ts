@@ -1,9 +1,11 @@
+import { InjectableFactory } from '@ui-framework/ioc';
 import { IModule } from './modules/IModule';
+import { IPlugin } from './plugins/IPlugin';
 
 export interface IAppHost {
-	splash(factory: (el: Element) => void): IAppHost;
-	module<T>(module: IModule<T>): IAppHost;
-	configure(configFn: (...providers: Array<any>) => void, dependencies: Array<string | symbol>): IAppHost;
-	ready(readyFn: (...services: Array<any>) => void, dependencies: Array<string | symbol>): IAppHost;
+	module<T>(module: IModule<T>);
+	plugin(plugin: IPlugin);
+	configure(configuration: InjectableFactory<any>);
+	ready(readyCallback: InjectableFactory<any>);
 	start();
 }
