@@ -9,6 +9,7 @@ import textParsingStrategy from './text';
 import ContentMimeType from '../../ContentMimeType';
 import { ResponseParsingStrategy } from '../..';
 import { IResponseParsingStrategyFactory } from './IResponseParsingStrategyFactory';
+import { getPlatform } from '@ui-framework/utils';
 
 const arrayBufferTypes = [
 	ContentMimeType.aac,
@@ -98,13 +99,7 @@ const textTypes = [
 ];
 
 export class ResponseParsingStrategyFactory implements IResponseParsingStrategyFactory {
-	static $inject = ['Platform'];
-
-	private _platform: Platform;
-
-	constructor(platform: Platform) {
-		this._platform = platform;
-	}
+	private _platform = getPlatform()
 
 	public getStrategyFor(contentType: ResponseContentType): ResponseParsingStrategy {
 		switch(contentType) {

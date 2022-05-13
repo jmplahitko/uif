@@ -22,6 +22,7 @@
     "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
   },
 	"dependencies": {
+		"detect-browser": "^5.2.1",
 		"path-to-regexp": "^3.0.0"
 	},
   "scripts": {

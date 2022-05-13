@@ -32,7 +32,6 @@
 		"@ui-framework/storage": "^3.0.0",
 		"@ui-framework/utils": "^3.0.0",
 		"@ui-framework/validation": "^3.0.0",
-		"detect-browser": "^5.2.1",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {

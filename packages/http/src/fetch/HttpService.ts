@@ -10,13 +10,14 @@ import CancellablePromise from './CancellablePromise';
 import RequestOptions, { TRequestOptions } from './RequestOptions';
 import { IResponseParsingStrategyFactory } from './responseParsingStrategies/IResponseParsingStrategyFactory';
 import { createPipe, isBufferArray, isBlob, isFormData, isURLSearchParams, isUndefined } from '@ui-framework/utils';
+import { ResponseParsingStrategyFactory } from './responseParsingStrategies';
 
 function isJSONRequest(data: any): boolean {
 	return !isBufferArray(data) && !isBlob(data) && !isFormData(data) && !isURLSearchParams(data);
 }
 
-createHttpService.$inject = ['IHttpProvider', 'IResponseParsingStrategyFactory'];
-export function createHttpService(provider: IHttpProvider, responseParsingStrategyFactory: IResponseParsingStrategyFactory): IHttpService {
+export function createHttpService(provider: IHttpProvider): IHttpService {
+	const responseParsingStrategyFactory = new ResponseParsingStrategyFactory();
 	const prepareResponse = prepareResponseDetails(responseParsingStrategyFactory);
 
 	const defaultRequestOptions = provider.defaults.requestOptions;

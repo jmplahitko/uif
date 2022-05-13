@@ -1,7 +1,7 @@
 import { detect } from 'detect-browser';
-import { Platform } from '../platform';
+import { Platform } from '.';
 
-export function platformFactory(): Platform {
+export default function getPlatform(): Platform {
 	const description = detect();
 
 	return {

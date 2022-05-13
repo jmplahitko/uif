@@ -86,3 +86,5 @@ export type Platform = {
 	readonly type: PlatformType | null;
 	readonly version: string | null;
 }
+
+export { default as getPlatform } from './getPlatform';

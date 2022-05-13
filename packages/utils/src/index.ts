@@ -7,5 +7,6 @@ export * from './function';
 export * from './number';
 export * from './object';
 export * from './parse';
+export * from './platform';
 export * from './predicate';
 export * from './string';
