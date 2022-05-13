@@ -1,6 +1,6 @@
 import { InjectableFactory } from '@ui-framework/ioc';
 import { v4 as uuid } from 'uuid';
-import { configurations } from './containers';
+import { configurations } from '../containers';
 
 export function register(fn: InjectableFactory<void>) {
 	configurations.register(uuid(), fn);

@@ -1,6 +1,5 @@
-goodConfiguration.$inject = ['Platform', 'ISettingsProvider'];
-export function goodConfiguration(platform, settingsProvider) {
-	console.log('platform', platform);
+goodConfiguration.$inject = ['ISettingsProvider'];
+export function goodConfiguration(settingsProvider) {
 	console.log('settingsProvider', settingsProvider);
 }
 

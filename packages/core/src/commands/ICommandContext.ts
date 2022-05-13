@@ -1,7 +1,6 @@
 import { ResponseDetails } from '@ui-framework/http';
 import { CommandStatus } from './CommandStatus';
 import { IHandleableError } from '../IHandleableError';
-import { IState } from '../IState';
 
 export interface ICommandContext<TPayload, TResponseBody = null, TRequestBody = TPayload> {
 	model: Static<TPayload>;

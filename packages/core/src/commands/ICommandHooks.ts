@@ -1,6 +1,4 @@
 import { RequestDetails } from '@ui-framework/http';
-import { IAppContext } from '../IAppContext';
-import { IState } from '../IState';
 import { ICommandContext } from './ICommandContext';
 
 export interface ICommandHooks<TPayload, TResponseBody = null, TRequestBody = TPayload> {
