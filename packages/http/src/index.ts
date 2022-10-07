@@ -7,7 +7,7 @@ export const baseUrlDefaultKey = '$default';
 
 export declare type HttpRequestFactoryInput<T> = {
 	model: Static<T>,
-	data: T,
+	data?: T,
 	options?: { requestOptions?: TRequestOptions, baseUrlKey?: string }
 }
 

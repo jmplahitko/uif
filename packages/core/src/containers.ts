@@ -1,9 +1,4 @@
-import { HttpProvider } from '@ui-framework/http';
-import { createHttpService } from '@ui-framework/http/fetch';
-import { Container, Lifespan, ReuseScope } from '@ui-framework/ioc';
-
-import { createSettingsProvider } from './plugins/settings/createSettingsProvider';
-import { settingsFactory } from './plugins/settings/settingsFactory';
+import { Container, Injectable, Lifespan, ReuseScope, ServiceKey } from '@ui-framework/ioc';
 
 const root = new Container();
 const configurations = root.spawn('@configurations');
@@ -13,23 +8,22 @@ const readyCallbacks = root.spawn('@readyCallbacks');
 const modules = services.spawn('@modules');
 const plugins = services.spawn('@plugins');
 
-/** root dependencies */
-root.register('ISettingsProvider', createSettingsProvider)
-	.asDurable();
+const registerConstant = (serviceKey: ServiceKey, injectable: Injectable<any>) => {
+	root.register(serviceKey, injectable)
+		.reusedWithin(ReuseScope.container)
+		.withLifespan(Lifespan.transient)
+		.asDurable();
+}
 
-root.register('IHttpProvider', HttpProvider)
-	.asDurable();
+const registerProvider = (serviceKey: ServiceKey, injectable: Injectable<any>) => {
+	root.register(serviceKey, injectable)
+		.asDurable();
+}
 
-// We store these services in root because we want to use it during bootstrapping, and services will not
-// be available at that time.
-root.register('IHttpService', createHttpService, ['IHttpProvider'])
-	.asDurable();
-
-/** service dependencies */
-services.register('Settings', settingsFactory)
-	.asDurable()
-	.reusedWithin(ReuseScope.container)
-	.withLifespan(Lifespan.transient);
+const registerService = (serviceKey: ServiceKey, injectable: Injectable<any>) => {
+	services.register(serviceKey, injectable)
+		.asDurable();
+}
 
 export {
 	configurations,
@@ -38,4 +32,7 @@ export {
 	readyCallbacks,
 	root,
 	services,
+	registerService,
+	registerProvider,
+	registerConstant
 };

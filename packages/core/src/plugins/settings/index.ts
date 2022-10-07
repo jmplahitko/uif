@@ -1,4 +1,4 @@
-import { IAppSettings } from './IAppSettings';
+import { IAppSettings } from '../..';
 
 export interface ISettingsProvider {
 	readonly debug: boolean;

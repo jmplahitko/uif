@@ -3,7 +3,7 @@ export function goodConfiguration(settingsProvider) {
 	console.log('settingsProvider', settingsProvider);
 }
 
-badConfiguration.$inject = ['Settings'];
+badConfiguration.$inject = ['IAppSettings'];
 export function badConfiguration(settings) {
 	console.log('settings', settings);
 }

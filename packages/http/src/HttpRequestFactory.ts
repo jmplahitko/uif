@@ -33,7 +33,7 @@ export function createHttpRequestFactory(provider: IHttpProvider): IHttpRequestF
 		let requestDetails: RequestDetails<T> | null = null;
 
 		if (route) {
-			const url = generateFullUrl(provider.defaults.baseUrls[input.options?.baseUrlKey ?? baseUrlDefaultKey], route, input.data);
+			const url = generateFullUrl(provider.defaults.baseUrls[input.options?.baseUrlKey ?? baseUrlDefaultKey], route, input.data as (Record<string, any> | undefined));
 			requestDetails = {
 				url,
 				method: route[1],

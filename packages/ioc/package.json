@@ -5,10 +5,15 @@
 	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
 	"homepage": "",
 	"license": "ISC",
+	"type": "module",
 	"main": "dist/index.js",
-	"directories": {
-		"dist": "dist",
-		"tests": "tests"
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"typesVersions": {
+		"*": {
+			".": ["dist/index.d.ts"]
+		}
 	},
 	"files": [
 		"dist"
