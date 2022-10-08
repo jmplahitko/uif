@@ -4,12 +4,9 @@
 	"version": "3.0.0",
 	"dependencies": {
 		"@ui-framework/core": "^3.0.0",
-		"@ui-framework/eventing": "^3.0.0",
 		"@ui-framework/ioc": "^3.0.0",
 		"@ui-framework/http": "^3.0.0",
-		"@ui-framework/navigation": "^3.0.0",
 		"@ui-framework/observable": "^3.0.0",
-		"@ui-framework/storage": "^3.0.0",
 		"@ui-framework/utils": "^3.0.0",
 		"@ui-framework/validation": "^3.0.0",
 		"vue": "^3.0.5"
