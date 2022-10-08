@@ -1,8 +1,11 @@
 import { Injectable, ServiceKey } from '@ui-framework/ioc';
 import { IPlugin } from '..';
-import { plugins, registerConstant, registerProvider, registerService } from '../containers';
-import { register as registerConfiguration } from '../startup/configurations';
-import { register as registerReadyCallback } from '../startup/ready';
+import { plugins } from '../containers';
+import { register as configure } from '../startup/configurations';
+import { register as constant } from '../startup/constants';
+import { register as provider } from '../startup/providers';
+import { register as service } from '../startup/services';
+import { register as ready } from '../startup/ready';
 
 export function usePlugin(plugin: IPlugin) {
 	const injectables = {
@@ -13,20 +16,17 @@ export function usePlugin(plugin: IPlugin) {
 
 	if (plugin.inject) plugin.inject(injectables);
 	if (plugin.install) plugin.install();
-	if (plugin.configure) registerConfiguration(plugin.configure);
-	if (plugin.ready) registerReadyCallback(plugin.ready);
+	if (plugin.configure) configure(plugin.configure);
+	if (plugin.ready) ready(plugin.ready);
 
-	injectables.providers.forEach((injectable, serviceKey) => {
-		registerProvider(serviceKey, injectable);
-	});
+	injectables.providers
+		.forEach((injectable, serviceKey) => provider(serviceKey, injectable));
 
-	injectables.services.forEach((injectable, serviceKey) => {
-		registerService(serviceKey, injectable);
-	});
+	injectables.services
+		.forEach((injectable, serviceKey) => service(serviceKey, injectable));
 
-	injectables.constants.forEach((injectable, serviceKey) => {
-		registerConstant(serviceKey, injectable);
-	});
+	injectables.constants
+		.forEach((injectable, serviceKey) => constant(serviceKey, injectable));
 
 	plugins.registerFactory(plugin.name, () => ({
 		plugin,

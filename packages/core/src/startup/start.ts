@@ -1,7 +1,6 @@
+import { register as constant } from './constants';
 import { init as configure } from './configurations';
 import { init as ready } from './ready';
-import { registerConstant, root } from '../containers';
-import { Lifespan, ReuseScope } from '@ui-framework/ioc';
 import { copy } from '@ui-framework/utils';
 import { IStartupOptions } from '..';
 import { usePlugin } from '../plugins/usePlugin';
@@ -12,7 +11,7 @@ import { createHttpPlugin } from '../plugins/http/createHttpPlugin';
 let started = false;
 
 export async function start(options: IStartupOptions) {
-	registerConstant('IStartupOptions', () => copy(options));
+	constant('IStartupOptions', () => copy(options));
 
 	usePlugin(createSettingsPlugin(options));
 	usePlugin(createHttpPlugin());
