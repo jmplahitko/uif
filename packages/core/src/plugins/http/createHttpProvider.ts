@@ -3,53 +3,45 @@ import { RequestOptions, TRequestOptions } from '@ui-framework/http/fetch';
 import { merge } from '@ui-framework/utils';
 import { baseUrlDefaultKey, HttpDefaults, IHttpProvider } from '.';
 
-export class HttpProvider implements IHttpProvider {
-	private _defaults: HttpDefaults = {
+export function createHttpProvider(): IHttpProvider {
+	const _defaults: HttpDefaults = {
 		baseUrls: {
 			[baseUrlDefaultKey]: ''
 		},
 		requestOptions: new RequestOptions()
 	}
-	private _interceptors: Array<IHttpInterceptor<any, any>> = [];
-	private _routes: Map<Static<any>, [string, HttpMethod]> = new Map();
+	const _interceptors: Array<IHttpInterceptor<any, any>> = [];
+	const _routes: Map<Static<any>, [string, HttpMethod]> = new Map();
 
-	constructor() {
+	const provider = {
+		get defaults() {
+			return _defaults;
+		},
 
+		get interceptors() {
+			return _interceptors;
+		},
+
+		get routes() {
+			return _routes;
+		},
+		setBaseUrls(baseUrls: Record<string, string>) {
+			_defaults.baseUrls = merge(_defaults.baseUrls, baseUrls);
+			return provider;
+		},
+		setDefaultRequestOptions(requestOptions: TRequestOptions) {
+			_defaults.requestOptions = _defaults.requestOptions.merge(requestOptions);
+			return provider;
+		},
+		addRoutes(configure: (routes: Map<Static<any>, [string, HttpMethod]>) => void) {
+			configure(_routes);
+			return provider;
+		},
+		addInterceptors(configure: (interceptors: Array<IHttpInterceptor<any, any>>) => void) {
+			configure(_interceptors);
+			return provider;
+		}
 	}
 
-	get defaults() {
-		return this._defaults;
-	}
-
-	get interceptors() {
-		return this._interceptors;
-	}
-
-	get routes() {
-		return this._routes;
-	}
-
-	public setBaseUrls(baseUrls: Record<string, string>) {
-		this._defaults.baseUrls = merge(this._defaults.baseUrls, baseUrls);
-
-		return this;
-	}
-
-	public setDefaultRequestOptions(requestOptions: TRequestOptions) {
-		this._defaults.requestOptions = this._defaults.requestOptions.merge(requestOptions);
-
-		return this;
-	}
-
-	public addRoutes(configure: (routes: Map<Static<any>, [string, HttpMethod]>) => void) {
-		configure(this._routes);
-
-		return this;
-	}
-
-	public addInterceptors(configure: (interceptors: Array<IHttpInterceptor<any, any>>) => void) {
-		configure(this._interceptors);
-
-		return this;
-	}
+	return provider;
 }
