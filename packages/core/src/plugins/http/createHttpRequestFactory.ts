@@ -1,8 +1,6 @@
-import { baseUrlDefaultKey, HttpRequestFactoryInput, RequestDetails } from './index';
-import { IHttpProvider } from './IHttpProvider';
-import { IHttpRequestFactory } from './IHttpRequestFactory';
-import { HttpMethod, simpleHttpMethods } from './HttpMethod';
+import { HttpMethod, RequestDetails, simpleHttpMethods } from '@ui-framework/http';
 import { compilePath, isUrl } from '@ui-framework/utils';
+import { baseUrlDefaultKey, HttpRequestFactoryInput, IHttpProvider, IHttpRequestFactory } from '.';
 
 function createQueryString(query: Record<string, string|number>): string {
 	let queryString = Object.keys(query)

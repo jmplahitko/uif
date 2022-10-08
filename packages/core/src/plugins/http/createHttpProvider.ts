@@ -1,9 +1,7 @@
-import { baseUrlDefaultKey, HttpDefaults } from './index';
-import { IHttpInterceptor } from './IHttpInterceptor';
-import { IHttpProvider } from './IHttpProvider';
-import RequestOptions, { TRequestOptions } from './fetch/RequestOptions';
+import { HttpMethod, IHttpInterceptor } from '@ui-framework/http';
+import { RequestOptions, TRequestOptions } from '@ui-framework/http/fetch';
 import { merge } from '@ui-framework/utils';
-import { HttpMethod } from './HttpMethod';
+import { baseUrlDefaultKey, HttpDefaults, IHttpProvider } from '.';
 
 export class HttpProvider implements IHttpProvider {
 	private _defaults: HttpDefaults = {

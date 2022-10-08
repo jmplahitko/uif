@@ -2,13 +2,11 @@ import 'abortcontroller-polyfill';
 
 import { RequestDetails, ResponseDetails } from '../index';
 import { HttpMethod, simpleHttpMethods } from '../HttpMethod';
-import { IHttpProvider } from '../IHttpProvider';
 import { IHttpService } from '../IHttpService';
 import { prepareResponseDetails } from './helpers/prepareResponseDetails';
 
 import CancellablePromise from './CancellablePromise';
 import RequestOptions, { TRequestOptions } from './RequestOptions';
-import { IResponseParsingStrategyFactory } from './responseParsingStrategies/IResponseParsingStrategyFactory';
 import { createPipe, isBufferArray, isBlob, isFormData, isURLSearchParams, isUndefined } from '@ui-framework/utils';
 import { ResponseParsingStrategyFactory } from './responseParsingStrategies';
 
@@ -16,13 +14,9 @@ function isJSONRequest(data: any): boolean {
 	return !isBufferArray(data) && !isBlob(data) && !isFormData(data) && !isURLSearchParams(data);
 }
 
-createHttpService.$inject = ['IHttpProvider'];
-export function createHttpService(provider: IHttpProvider): IHttpService {
+export function createHttpService({ defaultRequestOptions, interceptors }): IHttpService {
 	const responseParsingStrategyFactory = new ResponseParsingStrategyFactory();
 	const prepareResponse = prepareResponseDetails(responseParsingStrategyFactory);
-
-	const defaultRequestOptions = provider.defaults.requestOptions;
-	const interceptors = provider.interceptors;
 
 	function http<T, U>(requestDetails: RequestDetails<T>): CancellablePromise<ResponseDetails<T, U>> {
 		const abortController = new AbortController();

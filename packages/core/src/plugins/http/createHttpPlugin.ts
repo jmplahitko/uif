@@ -1,5 +1,6 @@
-import { createHttpRequestFactory, HttpProvider } from '@ui-framework/http';
-import { createHttpService } from '@ui-framework/http/fetch';
+import { createHttpRequestFactory } from './createHttpRequestFactory';
+import { HttpProvider } from './createHttpProvider';
+import { httpServiceFactory } from './httpServiceFactory';
 import { IPlugin } from '../..';
 
 export function createHttpPlugin(): IPlugin {
@@ -8,7 +9,7 @@ export function createHttpPlugin(): IPlugin {
 		inject({ providers }) {
 			providers.set('IHttpProvider', HttpProvider);
 			// setting these as a providers bc they should be available to everyone.
-			providers.set('IHttpService', createHttpService);
+			providers.set('IHttpService', httpServiceFactory);
 			providers.set('IHttpRequestFactory', createHttpRequestFactory);
 		}
 	}

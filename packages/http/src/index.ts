@@ -3,22 +3,6 @@ import ResponseContentType from './fetch/ResponseContentType';
 import { HttpMethod } from './HttpMethod';
 import HttpStatusCode from './HttpStatusCode';
 
-export const baseUrlDefaultKey = '$default';
-
-export declare type HttpRequestFactoryInput<T> = {
-	model: Static<T>,
-	data?: T,
-	options?: { requestOptions?: TRequestOptions, baseUrlKey?: string }
-}
-
-export declare type HttpDefaults = {
-	requestOptions: RequestOptions;
-	baseUrls: {
-		[baseUrlDefaultKey]: string;
-		[key: string]: string;
-	}
-}
-
 export declare type RequestDetails<T> = {
 	data?: T;
 	url: string;
@@ -42,13 +26,9 @@ export declare type ResponseParsingStrategy = {
 }
 
 export { IHttpInterceptor } from './IHttpInterceptor';
-export { IHttpProvider } from './IHttpProvider';
-export { IHttpRequestFactory } from './IHttpRequestFactory';
 export { IHttpService } from './IHttpService';
 
 export { default as ContentMimeType } from './ContentMimeType';
 export { default as HttpError } from './HttpError';
-export { HttpMethod } from './HttpMethod';
-export { HttpProvider } from './HttpProvider';
-export { createHttpRequestFactory } from './HttpRequestFactory';
+export { HttpMethod, simpleHttpMethods } from './HttpMethod';
 export { default as HttpStatusCode } from './HttpStatusCode';
