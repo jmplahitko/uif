@@ -2,19 +2,20 @@ import { register as constant } from './constants';
 import { init as configure } from './configurations';
 import { init as ready } from './ready';
 import { copy } from '@ui-framework/utils';
-import { IStartupOptions } from '..';
 import { usePlugin } from '../plugins/usePlugin';
 
 import { createSettingsPlugin } from '../plugins/settings/createSettingsPlugin';
 import { createHttpPlugin } from '../plugins/http/createHttpPlugin';
+import { createRouterPlugin } from '../plugins/navigation/createRouterPlugin';
 
 let started = false;
 
-export async function start(options: IStartupOptions) {
+export async function start(options: uif.IStartupOptions) {
 	constant('IStartupOptions', () => copy(options));
 
 	usePlugin(createSettingsPlugin(options));
 	usePlugin(createHttpPlugin());
+	usePlugin(createRouterPlugin(options));
 
 	return new Promise(async (resolve, reject) => {
 		try {
