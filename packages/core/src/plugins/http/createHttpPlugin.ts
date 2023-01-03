@@ -1,8 +1,9 @@
+import { IPlugin } from '../..';
 import { createHttpRequestFactory } from './createHttpRequestFactory';
 import { createHttpProvider } from './createHttpProvider';
 import { httpServiceFactory } from './httpServiceFactory';
 
-export function createHttpPlugin(): uif.IPlugin {
+export function createHttpPlugin(): IPlugin {
 	return {
 		name: 'http',
 		inject({ providers }) {

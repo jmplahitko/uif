@@ -1,6 +1,7 @@
+import { IPlugin } from '../..';
 import { createRouterProvider } from './createRouterProvider';
 
-export function createRouterPlugin(options: uif.IStartupOptions): uif.IPlugin {
+export function createRouterPlugin(options: IStartupOptions): IPlugin {
 	return {
 		name: 'router',
 		inject({ providers }) {

@@ -1,8 +1,9 @@
 import { configure, start, ready } from '@ui-framework/core';
 
 import { iCanHazDadJoke } from './ready/http/get/iCanHazDadJoke';
-import { badConfiguration, goodConfiguration, httpConfiguration } from './configure';
+import { badConfiguration, goodConfiguration, httpConfiguration, routerConfiguration } from './configure';
 
+configure(routerConfiguration);
 configure(httpConfiguration)
 configure(goodConfiguration);
 // configure(badConfiguration);

@@ -1,3 +1,4 @@
+// import { IStartupOptions } from '..';
 import { register as constant } from './constants';
 import { init as configure } from './configurations';
 import { init as ready } from './ready';
@@ -10,7 +11,7 @@ import { createRouterPlugin } from '../plugins/navigation/createRouterPlugin';
 
 let started = false;
 
-export async function start(options: uif.IStartupOptions) {
+export async function start(options: IStartupOptions) {
 	constant('IStartupOptions', () => copy(options));
 
 	usePlugin(createSettingsPlugin(options));

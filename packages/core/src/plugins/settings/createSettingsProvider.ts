@@ -1,5 +1,4 @@
 import { IHttpService } from '@ui-framework/http';
-import { IAppSettings, IStartupOptions } from '../..';
 import { ISettingsProvider } from '.';
 
 export const factory = (options: IStartupOptions) => {

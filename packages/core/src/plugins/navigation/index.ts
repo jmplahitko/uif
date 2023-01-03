@@ -1,10 +1,8 @@
 import { InjectableFactory } from '@ui-framework/ioc';
 
 declare global {
-	namespace uif {
-		interface IStartupOptions {
-			navigation?: Partial<RouterDefaults>;
-		}
+	interface IStartupOptions {
+		navigation?: Partial<RouterDefaults>;
 	}
 }
 

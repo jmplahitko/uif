@@ -1,5 +1,4 @@
 import { ISettingsProvider } from '.';
-import { IAppSettings } from '../..';
 
 export type Settings = {
 	debug: boolean;

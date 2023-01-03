@@ -1,40 +1,52 @@
-export * from './typings';
-
 export { register as configure } from './startup/configurations'
 export { register as ready } from './startup/ready';
 export { start } from './startup/start';
-import { ResponseDetails } from '@ui-framework/http';
 export { useModule } from './modules/useModule';
 export { usePlugin } from './plugins/usePlugin';
 
-export interface ICommand<TPayload, TResponseBody = null, TRequestBody = TPayload> {
-	cancel(): Promise<ICommandContext<TPayload, TResponseBody, TRequestBody>>;
-	execute(payload: TPayload): Promise<ICommandContext<TPayload, TResponseBody, TRequestBody>>;
-	progress(handler: (number) => void);
-	undo(): Promise<ICommandContext<TPayload, TResponseBody, TRequestBody>>;
+import { Injectable, InjectableFactory, ServiceKey } from '@ui-framework/ioc';
+
+declare global {
+	interface IStartupOptions {
+		el: string;
+	}
+
+	interface IState {
+
+	}
+
+	interface IAppContext {
+
+	}
+
+	interface IAppSettings {
+
+	}
 }
 
-export enum CommandStatus {
-	none = 0, // 0
-	pending = 1 << 0, // 1
-	completed = 1 << 1, // 2
-	succeeded = 1 << 2, // 4
-	failed = 1 << 3, // 8
+
+export declare interface IModule<TState extends IState> {
+	name: ServiceKey;
+	// commands: Map<Static<any>, Injectable<ICommand<any>>>;
+	state: TState;
+	configure?: InjectableFactory<void>;
+	ready?: InjectableFactory<void>;
 }
 
-export interface ICommandContext<TPayload, TResponseBody = null, TRequestBody = TPayload> {
-	model: Static<TPayload>;
-	status: CommandStatus;
-	payload: TPayload;
-	httpResult: ResponseDetails<TRequestBody, TResponseBody> | null;
-	state: {
-		previous: Partial<uif.IState>;
-		current: Partial<uif.IState>;
-	} | null;
-	error: Error | null;
+export declare interface IPlugin {
+	name: ServiceKey;
+	// startup hooks
+	install?();
+	inject?(injectionMaps: PluginInjectables)
+	configure?(configuration: InjectableFactory<void>);
+	willStart?(); // ?? idk if there is something here or not..
+	ready?: InjectableFactory<void>;
+	// react quietly to system events
+	listen?(event: any): void; // TODO - Events not complete
 }
 
-export interface ICommandProvider {
-	commands: Map<Static<any>, ICommand<any>>;
-	addCommand<T>(type: Static<T>, commandHooks: ICommand<T>)
+export declare type PluginInjectables = {
+	providers: Map<ServiceKey, Injectable<any>>;
+	services: Map<ServiceKey, Injectable<any>>;
+	constants: Map<ServiceKey, Injectable<any>>;
 }

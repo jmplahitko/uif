@@ -5,7 +5,7 @@ import { registerRouterMiddleware } from './registerRouterMiddleware';
 import { registerRoute } from './registerRoute';
 
 
-export function createRouterProvider(options?: uif.IStartupOptions): ServiceFactory<IRouterProvider> {
+export function createRouterProvider(options?: IStartupOptions): ServiceFactory<IRouterProvider> {
 	return function routerProviderFactory(container: Container): IRouterProvider {
 		let _defaults: RouterDefaults = {
 			mode: RouterMode.history,

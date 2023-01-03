@@ -1,4 +1,4 @@
-import { Injectable, ServiceKey } from '@ui-framework/ioc';
+import { Injectable, ServiceFactory, ServiceKey } from '@ui-framework/ioc';
 import { IPlugin } from '..';
 import { plugins } from '../containers';
 import { register as configure } from '../startup/configurations';
@@ -9,7 +9,7 @@ import { register as ready } from '../startup/ready';
 
 export function usePlugin(plugin: IPlugin) {
 	const injectables = {
-		providers: new Map<ServiceKey, Injectable<any>>(),
+		providers: new Map<ServiceKey, ServiceFactory<any>>(),
 		services: new Map<ServiceKey, Injectable<any>>(),
 		constants: new Map<ServiceKey, Injectable<any>>(),
 	};

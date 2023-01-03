@@ -1,7 +1,8 @@
+import { IPlugin } from '../..';
 import { factory as settingsProviderFactory } from './createSettingsProvider';
 import { settingsFactory } from './settingsFactory';
 
-export function createSettingsPlugin(options: uif.IStartupOptions): uif.IPlugin {
+export function createSettingsPlugin(options: IStartupOptions): IPlugin {
 	return {
 		name: 'settings',
 		inject({ providers, constants }) {

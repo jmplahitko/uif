@@ -5,14 +5,21 @@
 	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
 	"homepage": "",
 	"license": "ISC",
+	"type": "module",
+	"main": "./dist/index.js",
 	"exports": {
-		".": {
-			"import": "./dist/ui-framework.es.js",
-			"require": "./dist/ui-framework.cjs.js",
-			"default": "./dist/ui-framework.umd.js"
+		".": "./dist/index.js",
+		"./http": "./dist/plugins/http/index.js",
+		"./navigation": "./dist/plugins/navigation/index.js",
+		"./settings": "./dist/plugins/settings/index.js"
+	},
+	"typesVersions": {
+		"*": {
+			"http": ["dist/plugins/http/index.d.ts"],
+			"navigation": ["dist/plugins/navigation/index.d.ts"],
+			"settings": ["dist/plugins/settings/index.d.ts"]
 		}
 	},
-	"types": "./dist/index.d.ts",
 	"files": [
 		"dist"
 	],
@@ -37,8 +44,7 @@
 		"rollup-plugin-node-globals": "^1.4.0"
 	},
 	"scripts": {
-		"build": "vite build && tsc",
-		"build:types": "tsc",
+		"build": "tsc",
 		"test": "echo \"Error: run tests from root\" && exit 1"
 	}
 }
