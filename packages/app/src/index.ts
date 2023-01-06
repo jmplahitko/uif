@@ -1,17 +1,16 @@
-import { configure, start, ready } from '@ui-framework/core';
+import { configure, start } from '@ui-framework/core';
 
-import { iCanHazDadJoke } from './ready/http/get/iCanHazDadJoke';
-import { badConfiguration, goodConfiguration, httpConfiguration, routerConfiguration } from './configure';
+import { goodConfiguration, httpConfiguration } from './configure';
+import { createApp } from 'vue';
+import App from './components/App/App';
+import { router } from './navigation/router';
 
-configure(routerConfiguration);
 configure(httpConfiguration)
 configure(goodConfiguration);
-// configure(badConfiguration);
 
-// ready(iCanHazDadJoke);
+const app = createApp(App)
+app.use(router);
 
-start({
-	el: '#app'
-})
-	.then(console.log.bind(console))
-	.catch(console.log.bind(console));
+start({ el: '#app' }).then(() => {
+	app.mount('#app');
+});

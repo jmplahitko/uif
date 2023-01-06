@@ -1,4 +1,3 @@
-import { IRouterProvider, RouterMiddlewareType } from '@ui-framework/core/navigation';
 import { IHttpProvider } from '@ui-framework/core/http';
 
 goodConfiguration.$inject = ['ISettingsProvider'];
@@ -27,32 +26,4 @@ export function httpConfiguration(httpProvider: IHttpProvider) {
 		})
 	})
 	console.log(httpProvider);
-}
-
-routerConfiguration.$inject = ['IRouterProvider'];
-export function routerConfiguration(routerProvider: IRouterProvider) {
-	console.log(routerProvider.defaults);
-
-	const { routes, middlewares } = routerProvider;
-
-	middlewares.add({
-		type: RouterMiddlewareType.onEnter,
-		middleware: () => (to, from) => {
-			console.log(to, from);
-			return Promise.resolve();
-		}
-	});
-
-	routes.add({
-		name: 'home',
-		path: '/',
-		beforeEnter: () => (to, from) => {
-			console.log(to, from);
-			return Promise.resolve();
-		},
-	});
-
-	routerProvider
-
-	console.log(routerProvider.routes.get());
 }

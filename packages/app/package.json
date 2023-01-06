@@ -1,5 +1,6 @@
 {
 	"name": "@ui-framework/app",
+	"displayName": "UI Framework",
 	"description": "Test app and static doc site",
 	"version": "3.0.0",
 	"dependencies": {
@@ -9,14 +10,17 @@
 		"@ui-framework/observable": "^3.0.0",
 		"@ui-framework/utils": "^3.0.0",
 		"@ui-framework/validation": "^3.0.0",
-		"vue": "^3.0.5"
+		"vue": "^3.2.45",
+		"vue-router": "^4.1.6",
+		"pinia": "^2.0.28"
 	},
 	"devDependencies": {
-		"@vitejs/plugin-vue": "^1.1.5",
-		"@vue/compiler-sfc": "^3.0.5",
-		"vite": "^2.8.4",
+		"@vitejs/plugin-vue": "^4.0.0",
+		"@vitejs/plugin-vue-jsx": "^3.0.0",
+		"vite": "^4.0.0",
 		"rollup-plugin-node-builtins": "^2.1.2",
-		"rollup-plugin-node-globals": "^1.4.0"
+		"rollup-plugin-node-globals": "^1.4.0",
+		"sass": "^1.57.1"
 	},
 	"scripts": {
 		"dev": "vite",

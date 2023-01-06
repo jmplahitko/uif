@@ -4,9 +4,11 @@
 		"types": ["vite/client"],
 		"outDir": "./dist",
 		"isolatedModules": true,
+		"jsx": "preserve"
 	},
 	"include": [
-		"./src",
+		"./src/**/*.ts",
+		"./src/**/*.tsx",
 		"../global.d.ts"
 	]
 }
