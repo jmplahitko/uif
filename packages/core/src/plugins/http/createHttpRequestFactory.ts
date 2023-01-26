@@ -1,45 +1,82 @@
-import { HttpMethod, RequestDetails, simpleHttpMethods } from '@ui-framework/http';
-import { compilePath, isUrl } from '@ui-framework/utils';
-import { baseUrlDefaultKey, HttpRequestFactoryInput, IHttpProvider, IHttpRequestFactory } from '.';
+import { IHttpService, RequestDetails, ResponseDetails, simpleHttpMethods } from '@ui-framework/http';
+import { Container } from '@ui-framework/ioc/.';
+import { compilePath, createPipe, isUrl, prune, matchPath, isEmpty } from '@ui-framework/utils';
+import { baseUrlDefaultKey, IHttpProvider, IHttpRequestFactory , HttpRouteDefinition } from '.';
 
-function createQueryString(query: Record<string, string|number>): string {
+function createQueryString(query: object): string {
 	let queryString = Object.keys(query)
 		.map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
 		.join('&');
 
-	return `?${queryString}`;
+	return isEmpty(queryString)
+		? queryString :
+		`?${queryString}`;
 }
 
-function generateFullUrl(baseUrl: string, route: [string, HttpMethod], data: Record<string, any> = {}) {
+function generateFullUrl(baseUrl: string, route: HttpRouteDefinition, data: Record<string, any> = {}) {
 	let queryString;
-	let url = isUrl(route[0])
-		? compilePath(route[0], data)
-		: compilePath(`${baseUrl}${route[0]}`, data);
+	let path = isUrl(route.url)
+		? route[0]
+		: `${baseUrl}${route.url}`;
+	let url = compilePath(path, data)
 
-	/** TODO: Ensure our query params do not duplicate route params */
-	if (simpleHttpMethods.includes(route[1])) {
-		queryString = createQueryString(data);
-		url = `${url}${queryString}`
+	if (simpleHttpMethods.includes(route.method)) {
+		const usedTokens = matchPath(path, url);
+		const unusedTokens = prune(data, ...Object.keys(usedTokens))
+		queryString = createQueryString(unusedTokens);
+		url = `${url}${queryString}`;
 	}
 
 	return url;
 }
 
-export function createHttpRequestFactory(provider: IHttpProvider): IHttpRequestFactory {
-	return function httpRequestFactory<T>(input: HttpRequestFactoryInput<T>): RequestDetails<T> | null {
-		const route = provider.routes.get(input.model);
-		let requestDetails: RequestDetails<T> | null = null;
+export async function createHttpRequestFactory(container: Container): Promise<IHttpRequestFactory> {
+	const provider: IHttpProvider = await container.resolve('IHttpProvider');
+	const service: IHttpService = await container.resolve('IHttpService');
 
-		if (route) {
-			const url = generateFullUrl(provider.defaults.baseUrls[input.options?.baseUrlKey ?? baseUrlDefaultKey], route, input.data as (Record<string, any> | undefined));
-			requestDetails = {
-				url,
-				method: route[1],
-				data: input.data,
-				options: input.options?.requestOptions
+	return {
+		create(key, options?) {
+			type T = InstanceType<typeof key[0]>;
+			type U = InstanceType<typeof key[1]>;
+
+			const entry = provider.routes.get.entry(key) as HttpRouteDefinition<T, U>;
+			let resolver: ((data: T) => Promise<ResponseDetails<T, U>>) | null = null;
+
+			if (entry) {
+				resolver = async (data: T) => {
+					let { method, url, interceptor } = entry;
+
+					url = generateFullUrl(provider.defaults.baseUrls[options?.baseUrlKey ?? baseUrlDefaultKey], entry, data as (Record<string, any> | undefined));
+					let requestDetails: RequestDetails<T> = {
+						url,
+						method,
+						data,
+						options: options?.requestOptions
+					}
+
+					if (interceptor?.onRequest) {
+						const pipe = createPipe([
+							interceptor.onRequest.bind(interceptor)
+						]);
+
+						requestDetails = await pipe(requestDetails);
+					}
+
+					let responseDetails = await service<T, U>(requestDetails);
+
+					if (interceptor?.onResponse) {
+						const pipe = createPipe<ResponseDetails<T, U>>([
+							interceptor.onResponse.bind(interceptor)
+						]);
+
+						responseDetails = await pipe(responseDetails);
+					}
+
+					return responseDetails;
+				}
 			}
-		}
 
-		return requestDetails;
+			return resolver;
+		}
 	}
 }

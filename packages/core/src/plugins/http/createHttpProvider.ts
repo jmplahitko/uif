@@ -1,7 +1,18 @@
 import { HttpMethod, IHttpInterceptor } from '@ui-framework/http';
 import { RequestOptions, TRequestOptions } from '@ui-framework/http/fetch';
-import { merge } from '@ui-framework/utils';
-import { baseUrlDefaultKey, HttpDefaults, IHttpProvider } from '.';
+import { equals, merge } from '@ui-framework/utils';
+import {
+	baseUrlDefaultKey,
+	HttpDefaults,
+	HttpInterceptorDefinitionApi,
+	HttpInterceptorOptions,
+	HttpRouteDefinitionApi,
+	HttpRouteDefinitionSetter,
+	HttpRouteKey,
+	HttpRoutes,
+	IHttpProvider,
+	IHttpRouteDefinitionGetter
+} from '.';
 
 export function createHttpProvider(): IHttpProvider {
 	const _defaults: HttpDefaults = {
@@ -10,21 +21,57 @@ export function createHttpProvider(): IHttpProvider {
 		},
 		requestOptions: new RequestOptions()
 	}
-	const _interceptors: Array<IHttpInterceptor<any, any>> = [];
-	const _routes: Map<Static<any>, [string, HttpMethod]> = new Map();
+	const _interceptors: Map<IHttpInterceptor<any, any>, HttpInterceptorOptions> = new Map();
+	const _interceptorsApi: HttpInterceptorDefinitionApi = {
+		get() {
+			return Array.from(_interceptors)
+				.sort((a, b) => (a[1].order ?? 0) - (b[1].order ?? 0))
+				.map(x => x[0]);
+		},
+		add<T, U>(interceptor: IHttpInterceptor<T, U>, options?: HttpInterceptorOptions) {
+			_interceptors.set(interceptor, options ?? {});
+
+			return _interceptorsApi;
+		}
+	}
+
+	const _routes: HttpRoutes = new Set();
+	const _setRoute = (method: HttpMethod) => (key, url, interceptor?) => {
+		_routes.add({
+			method,
+			key,
+			url,
+			interceptor
+		});
+		return routesSetter;
+	};
+	const routesSetter: HttpRouteDefinitionSetter = {
+		get: _setRoute(HttpMethod.get),
+		delete: _setRoute(HttpMethod.delete),
+		head: _setRoute(HttpMethod.head),
+		patch: _setRoute(HttpMethod.patch),
+		post: _setRoute(HttpMethod.post),
+		put: _setRoute(HttpMethod.put),
+	};
+	const routesGetter: IHttpRouteDefinitionGetter = function() {
+		return _routes;
+	};
+	routesGetter.entry = (key: HttpRouteKey) => {
+		return Array.from(_routes)
+			.filter(x => equals(x.key, key))?.[0] ?? null;
+	}
+	const routesApi: HttpRouteDefinitionApi = {
+		get: routesGetter,
+		set: routesSetter
+	};
 
 	const provider = {
 		get defaults() {
 			return _defaults;
 		},
+		interceptors: _interceptorsApi,
+		routes: routesApi,
 
-		get interceptors() {
-			return _interceptors;
-		},
-
-		get routes() {
-			return _routes;
-		},
 		setBaseUrls(baseUrls: Record<string, string>) {
 			_defaults.baseUrls = merge(_defaults.baseUrls, baseUrls);
 			return provider;
@@ -33,14 +80,6 @@ export function createHttpProvider(): IHttpProvider {
 			_defaults.requestOptions = _defaults.requestOptions.merge(requestOptions);
 			return provider;
 		},
-		addRoutes(configure: (routes: Map<Static<any>, [string, HttpMethod]>) => void) {
-			configure(_routes);
-			return provider;
-		},
-		addInterceptors(configure: (interceptors: Array<IHttpInterceptor<any, any>>) => void) {
-			configure(_interceptors);
-			return provider;
-		}
 	}
 
 	return provider;

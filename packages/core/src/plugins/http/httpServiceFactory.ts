@@ -1,10 +1,11 @@
+import { IHttpService } from '@ui-framework/http';
 import { createHttpService } from '@ui-framework/http/fetch';
 import { IHttpProvider } from '.';
 
 httpServiceFactory.$inject = ['IHttpProvider'];
-export function httpServiceFactory({ interceptors, defaults }: IHttpProvider) {
+export function httpServiceFactory(provider: IHttpProvider): IHttpService {
 	return createHttpService({
-		defaultRequestOptions: defaults.requestOptions,
-		interceptors
+		defaultRequestOptions: provider.defaults.requestOptions,
+		interceptors: provider.interceptors.get()
 	});
 }

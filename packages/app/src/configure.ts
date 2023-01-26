@@ -1,4 +1,7 @@
 import { IHttpProvider } from '@ui-framework/core/http';
+import { HttpMethod } from '@ui-framework/http';
+import { GetUser } from './model/users/exchange/GetUser';
+import { GetUserResponse } from './model/users/exchange/GetUserResponse';
 
 goodConfiguration.$inject = ['ISettingsProvider'];
 export function goodConfiguration(settingsProvider) {
@@ -12,18 +15,29 @@ export function badConfiguration(settings) {
 
 httpConfiguration.$inject = ['IHttpProvider'];
 export function httpConfiguration(httpProvider: IHttpProvider) {
-	httpProvider.addInterceptors((interceptors) => {
-		interceptors.push({
-			onRequest(requestDetails, next, resolve, reject) {
-				console.log('Request pipe:', requestDetails);
-				next(requestDetails);
+	httpProvider.routes.set
+		.get([GetUser, GetUserResponse], '/users/:id', {
+			onRequest(details, next) {
+				console.log(details);
+				next(details);
 			},
-			onResponse(responseDetails, next, resolve, reject) {
-				console.log('Response pipe:', responseDetails);
-				next(responseDetails);
-				// reject(responseDetails);
+			onResponse(details, next) {
+				console.log(details);
+				next(details);
 			}
-		})
-	})
+		});
+
+
+	httpProvider.interceptors.add({
+		onRequest(requestDetails, next, resolve, reject) {
+			console.log('Request pipe:', requestDetails);
+			next(requestDetails);
+		},
+		onResponse(responseDetails, next, resolve, reject) {
+			console.log('Response pipe:', responseDetails);
+			next(responseDetails);
+			// reject(responseDetails);
+		}
+	});
 	console.log(httpProvider);
 }
