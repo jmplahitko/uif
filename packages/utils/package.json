@@ -23,7 +23,7 @@
   },
 	"dependencies": {
 		"detect-browser": "^5.2.1",
-		"path-to-regexp": "^3.0.0"
+		"path-to-regexp": "^6.2.1"
 	},
   "scripts": {
 		"build": "tsc",
