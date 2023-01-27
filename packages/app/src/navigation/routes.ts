@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 export const routes: RouteRecordRaw[] = [
 	{
 		name: 'home',
-		path: '/',
+		path: '',
 		props: {
 			msg: 'What up..'
 		},

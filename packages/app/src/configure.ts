@@ -3,26 +3,20 @@ import { HttpMethod } from '@ui-framework/http';
 import { GetUser } from './model/users/exchange/GetUser';
 import { GetUserResponse } from './model/users/exchange/GetUserResponse';
 
-goodConfiguration.$inject = ['ISettingsProvider'];
-export function goodConfiguration(settingsProvider) {
-	console.log('settingsProvider', settingsProvider);
-}
+configure.$inject = ['ISettingsProvider', 'IAppSettings', 'IHttpProvider'];
+export function configure(settingsProvider, settings, httpProvider: IHttpProvider) {
+	// console.log('settingsProvider', settingsProvider);
+	// console.log('settings', settings);
 
-badConfiguration.$inject = ['IAppSettings'];
-export function badConfiguration(settings) {
-	console.log('settings', settings);
-}
-
-httpConfiguration.$inject = ['IHttpProvider'];
-export function httpConfiguration(httpProvider: IHttpProvider) {
+	httpProvider.setBaseUrls({ '$default': 'api' })
 	httpProvider.routes.set
 		.get([GetUser, GetUserResponse], '/users/:id', {
 			onRequest(details, next) {
-				console.log(details);
+				console.log('req: user', details);
 				next(details);
 			},
 			onResponse(details, next) {
-				console.log(details);
+				console.log('resp: user', details);
 				next(details);
 			}
 		});
@@ -35,8 +29,8 @@ export function httpConfiguration(httpProvider: IHttpProvider) {
 		},
 		onResponse(responseDetails, next, resolve, reject) {
 			console.log('Response pipe:', responseDetails);
-			next(responseDetails);
-			// reject(responseDetails);
+			// next(responseDetails);
+			reject(responseDetails);
 		}
 	});
 	console.log(httpProvider);
