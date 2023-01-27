@@ -16,9 +16,9 @@ function createQueryString(query: object): string {
 function generateFullUrl(baseUrl: string, route: HttpRouteDefinition, data: Record<string, any> = {}) {
 	let queryString;
 	let path = isUrl(route.url)
-		? route[0]
+		? route.url
 		: `${baseUrl}${route.url}`;
-	let url = compilePath(path, data)
+	let url = compilePath(path, data);
 
 	if (simpleHttpMethods.includes(route.method)) {
 		const usedTokens = matchPath(path, url);
@@ -43,37 +43,41 @@ export async function createHttpRequestFactory(container: Container): Promise<IH
 			let resolver: ((data: T) => Promise<ResponseDetails<T, U>>) | null = null;
 
 			if (entry) {
-				resolver = async (data: T) => {
-					let { method, url, interceptor } = entry;
+				resolver = (data: T) => new Promise(async (resolve, reject) => {
+					try {
+						let { method, url, interceptor } = entry;
 
-					url = generateFullUrl(provider.defaults.baseUrls[options?.baseUrlKey ?? baseUrlDefaultKey], entry, data as (Record<string, any> | undefined));
-					let requestDetails: RequestDetails<T> = {
-						url,
-						method,
-						data,
-						options: options?.requestOptions
+						url = generateFullUrl(provider.defaults.baseUrls[options?.baseUrlKey ?? baseUrlDefaultKey], entry, data as (Record<string, any> | undefined));
+						let requestDetails: RequestDetails<T> = {
+							url,
+							method,
+							data,
+							options: options?.requestOptions
+						}
+
+						if (interceptor?.onRequest) {
+							const pipe = createPipe([
+								interceptor.onRequest.bind(interceptor)
+							]);
+
+							requestDetails = await pipe(requestDetails);
+						}
+
+						let responseDetails = await service<T, U>(requestDetails);
+
+						if (interceptor?.onResponse) {
+							const pipe = createPipe<ResponseDetails<T, U>>([
+								interceptor.onResponse.bind(interceptor)
+							]);
+
+							responseDetails = await pipe(responseDetails);
+						}
+
+						resolve(responseDetails);
+					} catch(e) {
+						reject(e);
 					}
-
-					if (interceptor?.onRequest) {
-						const pipe = createPipe([
-							interceptor.onRequest.bind(interceptor)
-						]);
-
-						requestDetails = await pipe(requestDetails);
-					}
-
-					let responseDetails = await service<T, U>(requestDetails);
-
-					if (interceptor?.onResponse) {
-						const pipe = createPipe<ResponseDetails<T, U>>([
-							interceptor.onResponse.bind(interceptor)
-						]);
-
-						responseDetails = await pipe(responseDetails);
-					}
-
-					return responseDetails;
-				}
+				});
 			}
 
 			return resolver;

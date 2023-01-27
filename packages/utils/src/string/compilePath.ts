@@ -17,7 +17,7 @@ function compilePath(path: string, data: object = {}): string {
 	let toPath = pathToRegexp.compile(path, { encode: encodeURIComponent });
 	let compiledPath = toPath(data);
 
-	return compiledPath;
+	return decodeURIComponent(compiledPath);
 }
 
 export default compilePath;

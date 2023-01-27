@@ -102,7 +102,7 @@ export class Container {
 		return new ServiceEntryConfigurer(entry);
 	}
 
-	public async resolve(name: ServiceKey): Promise<any> {
+	public async resolve<T = unknown>(name: ServiceKey): Promise<T> {
 		return await this._resolveImpl(name, true);
 	}
 

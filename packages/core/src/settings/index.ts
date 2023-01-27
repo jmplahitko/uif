@@ -1,3 +1,6 @@
+export { factory as createSettingsProvider } from './createSettingsProvider';
+export { settingsFactory } from './settingsFactory';
+
 declare global {
 	interface IStartupOptions {
 		settings?: {

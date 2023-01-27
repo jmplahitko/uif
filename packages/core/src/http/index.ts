@@ -1,6 +1,10 @@
 import { HttpMethod, IHttpInterceptor, ResponseDetails } from '@ui-framework/http';
 import { RequestOptions, TRequestOptions } from '@ui-framework/http/fetch';
 
+export { createHttpProvider } from './createHttpProvider';
+export { createHttpRequestFactory } from './createHttpRequestFactory';
+export { httpServiceFactory } from './httpServiceFactory';
+
 export const baseUrlDefaultKey = '$default';
 
 export declare type HttpRequestFactoryInput<T, U = null> = {

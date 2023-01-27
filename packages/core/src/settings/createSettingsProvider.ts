@@ -1,9 +1,10 @@
 import { IHttpService } from '@ui-framework/http';
+import { Container } from '@ui-framework/ioc/.';
 import { ISettingsProvider } from '.';
 
 export const factory = (options: IStartupOptions) => {
-	createSettingsProvider.$inject = ['IHttpService'];
-	async function createSettingsProvider(httpService: IHttpService): Promise<ISettingsProvider> {
+	async function createSettingsProvider(container: Container): Promise<ISettingsProvider> {
+		const httpService = await container.resolve<IHttpService>('IHttpService');
 		const debug = __DEBUG__;
 		const settingsUrl = options.settings?.settingsUrl || 'settings.json';
 		let appSettings: IAppSettings = {};

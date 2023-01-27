@@ -9,9 +9,9 @@
 	"main": "./dist/index.js",
 	"exports": {
 		".": "./dist/index.js",
-		"./http": "./dist/plugins/http/index.js",
+		"./http": "./dist/http/index.js",
 		"./navigation": "./dist/plugins/navigation/index.js",
-		"./settings": "./dist/plugins/settings/index.js"
+		"./settings": "./dist/settings/index.js"
 	},
 	"typesVersions": {
 		"*": {

@@ -1,22 +1,27 @@
-// import { IStartupOptions } from '..';
 import { register as constant } from './constants';
+import { register as provider } from './providers';
+import { register as service } from './services';
 import { init as configure } from './configurations';
 import { init as ready } from './ready';
 import { copy } from '@ui-framework/utils';
-import { usePlugin } from '../plugins/usePlugin';
 
-import { createSettingsPlugin } from '../plugins/settings/createSettingsPlugin';
-import { createHttpPlugin } from '../plugins/http/createHttpPlugin';
-import { createRouterPlugin } from '../plugins/navigation/createRouterPlugin';
+import {
+	createHttpProvider,
+	httpServiceFactory,
+	createHttpRequestFactory
+} from '../http';
+import { createSettingsProvider, settingsFactory } from '../settings';
 
 let started = false;
 
 export async function start(options: IStartupOptions) {
 	constant('IStartupOptions', () => copy(options));
+	constant('IAppSettings', settingsFactory);
 
-	usePlugin(createSettingsPlugin(options));
-	usePlugin(createHttpPlugin());
-	usePlugin(createRouterPlugin(options));
+	provider('ISettingsProvider', createSettingsProvider(options));
+	provider('IHttpProvider', createHttpProvider);
+	provider('IHttpService', httpServiceFactory);
+	provider('IHttpRequestFactory', createHttpRequestFactory);
 
 	return new Promise(async (resolve, reject) => {
 		try {
