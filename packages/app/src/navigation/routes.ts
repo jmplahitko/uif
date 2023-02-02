@@ -7,7 +7,7 @@ export const routes: RouteRecordRaw[] = [
 		props: {
 			msg: 'What up..'
 		},
-		component: () => import('../components/HelloWorld/HelloWorld'),
+		component: () => import('../components/HelloWorld'),
 		meta: {
 			pageTitle: 'Home'
 		}

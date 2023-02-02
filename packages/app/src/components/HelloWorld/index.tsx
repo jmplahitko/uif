@@ -1,5 +1,6 @@
 import './HelloWorld.scss';
 import { h, ref, defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
 
 export default defineComponent({
 	name: 'HelloWorld',
@@ -17,7 +18,7 @@ export default defineComponent({
 		return (
 			<div>
 				<h1>{ this.msg }</h1>
-				{/* <p>
+				<p>
 					Recommended IDE setup:
 					<a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
 					+
@@ -36,13 +37,9 @@ export default defineComponent({
 				<p>
 					<a href="https://vitejs.dev/guide/features.html" target="_blank">Vite Docs</a> |
 					<a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
-				</p> */}
+				</p>
 
-				{/* <button @click="count++">count is: { count }</button>
-				<p>
-					Edit
-					<code>components/HelloWorld.vue</code> to test hot module replacement.
-				</p> */}
+				<RouterLink to={{ name: 'auth' }}>Sign In</RouterLink>
 			</div>
 		)
 	}

@@ -1,10 +1,10 @@
+import { configure } from '@ui-framework/core';
 import { IHttpProvider } from '@ui-framework/core/http';
-import { HttpMethod } from '@ui-framework/http';
-import { GetUser } from './model/users/exchange/GetUser';
-import { GetUserResponse } from './model/users/exchange/GetUserResponse';
+import { GetUser } from '../../model/users/exchange/GetUser';
+import { GetUserResponse } from '../../model/users/exchange/GetUserResponse';
 
-configure.$inject = ['ISettingsProvider', 'IAppSettings', 'IHttpProvider'];
-export function configure(settingsProvider, settings, httpProvider: IHttpProvider) {
+http.$inject = ['ISettingsProvider', 'IAppSettings', 'IHttpProvider'];
+export function http(settingsProvider, settings, httpProvider: IHttpProvider) {
 	// console.log('settingsProvider', settingsProvider);
 	// console.log('settings', settings);
 
@@ -35,3 +35,5 @@ export function configure(settingsProvider, settings, httpProvider: IHttpProvide
 	});
 	console.log(httpProvider);
 }
+
+configure(http);

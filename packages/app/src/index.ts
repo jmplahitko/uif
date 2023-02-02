@@ -1,22 +1,14 @@
-import { createApp } from 'vue';
-import { configure, ready, start } from '@ui-framework/core';
-import { configure as config } from './configure';
+import { ready, start } from '@ui-framework/core';
 
-import App from './components/App/App';
-import { router } from './navigation/router';
-import { testGetUser } from './ready/testGetUser';
+import './navigation';
+import './store';
+import './startup/configure/http';
+// import './startup/ready/testGetUser';
+import './startup/ready/vue';
 
-const app = createApp(App);
+import './modules/auth';
 
-app.use(router);
-
-configure(config);
-ready(testGetUser);
-start({ el: '#app' })
-	.then(() => {
-
-		app.mount('#app');
-	})
+start({})
 	.catch((e) => {
 		console.log(e);
-	})
+	});

@@ -1,10 +1,11 @@
+import { ready } from '@ui-framework/core';
 import { IHttpRequestFactory } from '@ui-framework/core/http';
 import { IHttpService } from '@ui-framework/http';
-import { GetUser } from '../model/users/exchange/GetUser';
-import { GetUserResponse } from '../model/users/exchange/GetUserResponse';
+import { GetUser } from '../../model/users/exchange/GetUser';
+import { GetUserResponse } from '../../model/users/exchange/GetUserResponse';
 
 testGetUser.$inject = ['IHttpRequestFactory', 'IHttpService'];
-export async function testGetUser({ create }: IHttpRequestFactory, service: IHttpService) {
+async function testGetUser({ create }: IHttpRequestFactory, service: IHttpService) {
 	const getUser = create([GetUser, GetUserResponse]);
 
 	if (getUser) {
@@ -17,3 +18,5 @@ export async function testGetUser({ create }: IHttpRequestFactory, service: IHtt
 		console.log(response);
 	}
 }
+
+ready(testGetUser);
