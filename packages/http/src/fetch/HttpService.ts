@@ -9,6 +9,7 @@ import CancellablePromise from './CancellablePromise';
 import RequestOptions, { TRequestOptions } from './RequestOptions';
 import { createPipe, isBufferArray, isBlob, isFormData, isURLSearchParams, isUndefined } from '@ui-framework/utils';
 import { ResponseParsingStrategyFactory } from './responseParsingStrategies';
+import { generateUrl } from '../helpers/generateUrl';
 
 function isJSONRequest(data: any): boolean {
 	return !isBufferArray(data) && !isBlob(data) && !isFormData(data) && !isURLSearchParams(data);
@@ -19,6 +20,8 @@ export function createHttpService({ defaultRequestOptions, interceptors }): IHtt
 	const prepareResponse = prepareResponseDetails(responseParsingStrategyFactory);
 
 	function http<T, U>(requestDetails: RequestDetails<T>): CancellablePromise<ResponseDetails<T, U>> {
+		requestDetails.url = generateUrl(requestDetails.url, requestDetails.method);
+
 		const abortController = new AbortController();
 		let responseDetails: ResponseDetails<T, U>;
 		// @ts-ignore - we know the array will only contain middlewares and not undefined, but ts doesn't.
@@ -88,16 +91,16 @@ export function createHttpService({ defaultRequestOptions, interceptors }): IHtt
 	http.get = shorthandRequestMethod(HttpMethod.get);
 	http.head = shorthandRequestMethod(HttpMethod.head);
 	http.options = shorthandRequestMethod(HttpMethod.options);
+	http.delete = shorthandRequestMethod(HttpMethod.delete);
 	// requests with bodies
-	http.delete = shorthandRequestMethodWithBody(HttpMethod.delete);
 	http.patch = shorthandRequestMethodWithBody(HttpMethod.patch);
 	http.post = shorthandRequestMethodWithBody(HttpMethod.post);
 	http.put = shorthandRequestMethodWithBody(HttpMethod.put);
 
 	function shorthandRequestMethod(method: HttpMethod) {
-		return function<U>(url: string, options?: TRequestOptions) {
-			return http<void, U>({
-				data: undefined,
+		return function<T, U>(url: string, data?: T, options?: TRequestOptions) {
+			return http<T, U>({
+				data,
 				method,
 				options,
 				url
