@@ -1,3 +1,4 @@
+import { Observable } from '@ui-framework/observable/dist/types';
 
 export { register as configure } from './startup/configurations'
 export { register as constant } from './startup/constants';
@@ -26,6 +27,11 @@ declare global {
 	interface IAppSettings {
 
 	}
+}
+
+export declare interface IObservable<T extends object> {
+	observe: Observable<T>['observe'];
+	observeOnce: Observable<T>['observeOnce'];
 }
 
 
