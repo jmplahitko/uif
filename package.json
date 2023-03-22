@@ -11,6 +11,8 @@
 	},
 	"scripts": {
 		"build": "lerna run build",
+		"build:app": "lerna run build --scope=@ui-framework/app",
+		"build:auth": "lerna run build --scope=@ui-framework/auth",
 		"build:core": "lerna run build --scope=@ui-framework/core",
 		"build:http": "lerna run build --scope=@ui-framework/http",
 		"build:ioc": "lerna run build --scope=@ui-framework/ioc",
