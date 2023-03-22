@@ -1,0 +1,38 @@
+{
+  "name": "@ui-framework/auth",
+  "version": "3.0.0",
+  "description": "@ui-framework/auth",
+  "author": "Joe Plahitko <joseph.plahitko@egov.com>",
+	"homepage": "",
+	"license": "ISC",
+	"type": "module",
+	"main": "./dist/index.js",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"typesVersions": {
+		"*": {
+			".": ["dist/index.d.ts"]
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"registry": "http://registry.ai.org/repository/npm-group/"
+	},
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@code.ai.org:7999/~jplahitko/ui-framework-next.git"
+  },
+	"dependencies": {
+		"@ui-framework/core": "^3.0.0",
+		"@ui-framework/http": "^3.0.0",
+		"@ui-framework/observable": "^3.0.0",
+		"@ui-framework/utils": "^3.0.0"
+	},
+	"scripts": {
+		"build": "tsc",
+		"test": "echo \"Error: run tests from root\" && exit 1"
+	}
+}
