@@ -6,6 +6,7 @@
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",
+	"type": "module",
 	"types": "dist/index.d.ts",
   "directories": {
     "dist": "dist",

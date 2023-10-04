@@ -1,10 +1,9 @@
 import { Router } from 'vue-router';
-import { authorize } from './navigation/middlewares/authorize';
-import { authRoutes } from './navigation/routes';
+// import { authorize } from './router/middlewares/authorize';
+import { routes } from './router/routes';
 
-auth.$inject = ['Router'];
+auth.$inject = ['Router', 'IHttpProvider'];
 export function auth(router: Router) {
-	router.addRoute(authRoutes);
-	router.beforeEach(authorize)
-
+	routes.forEach(route => router.addRoute(route));
+	// router.beforeEach(authorize);
 }

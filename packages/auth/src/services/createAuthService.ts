@@ -1,65 +1,51 @@
-import { IHttpService } from '@ui-framework/http';
-import observable from '@ui-framework/observable';
-import { IAuthContext, IAuthProvider, IAuthService } from '..';
-import { Authenticate, AuthenticateResponse } from '../model/Authenticate';
+import { AuthRequestType, Authenticate, Credentials, IAuthProvider, OAuth } from '..';
+
 
 createAuthService.$inject = ['IAuthProvider', 'IHttpService'];
-export function createAuthService(provider: IAuthProvider, http: IHttpService): IAuthService {
-	const { observe, observeOnce, state } = observable<IAuthContext>({
-		claims: {},
-		oauthState: {},
-		provider: '',
-	});
+export async function createAuthService(provider: IAuthProvider) {
 
-	function setState(authResponse: AuthenticateResponse | null) {
-		state.claims = authResponse?.claims ?? {};
-		state.provider = authResponse?.provider ?? '';
-		state.oauthState = authResponse?.state ?? {};
-	}
+	// const creds: Authenticate = {
+	// 	type: AuthRequestType.credentials,
+	// 	provider: 'credentials',
+	// 	username: '',
+	// 	password: ''
+	// }
 
-	return {
-		observe,
-		observeOnce,
-		async login(authenticate: Authenticate) {
-			return new Promise((resolve, reject) => {
-				const provider = authenticate.provider;
-				const url = provider ? `/auth/${provider}` : '/auth'; // FIXME: don't hard-code the routes
-				// TODO: Mapping
+	// const oauth: Authenticate = {
+	// 	type: AuthRequestType.oauth,
+	// 	provider: 'access-indiana',
+	// 	returnUrl: '',
+	// 	state: {},
+	// }
 
-				http.post<Authenticate, AuthenticateResponse>(url, authenticate)
-					.then(response => {
-						if (response.data?.redirectUrl) {
-							window.location.href = response.data.redirectUrl;
-						}
+	// const oauthCallback: Authenticate = {
+	// 	type: AuthRequestType.oauthCallback,
+	// 	// provider: 'access-indiana',
+	// 	// authorizationVerifier: '',
+	// 	// accessToken: '',
+	// 	provider: '',
+	// 	// username: ''
+	// }
 
-						setState(response.data);
-						resolve({ ...state });
-					})
-					.catch(e => {
-						reject(e);
-					});
-			});
-		},
-		async logout(authenticate: Authenticate) {
-			return new Promise((resolve, reject) => {
-				const url = `/auth/logout`; // FIXME: don't hard-code the routes
-				// TODO: Mapping
+	// const ctx = await provider.login(creds);
 
-				http.post<Authenticate, AuthenticateResponse>(url, authenticate)
-					.then((response) => {
-						const redirectUrl = response.data?.redirectUrl;
+	// if (isCredentialsContext(ctx)) {
+	// 	ctx.username;
+	// 	ctx.provider;
+	// 	ctx.type;
+	// } else if (isOAuthContext(ctx)) {
+	// 	ctx.claims;
+	// 	ctx.oauthState;
+	// 	ctx.provider
+	// 	ctx.type;
+	// } else if (isOAuthRedirectContext(ctx)) {
+	// 	ctx.provider;
+	// 	ctx.redirectUrl;
+	// 	ctx.type;
+	// } else {
+	// 	ctx.provider;
+	// 	ctx.type
+	// }
 
-						if (redirectUrl) {
-							window.location.href = redirectUrl;
-						} else {
-							setState(null);
-							resolve({ ...state });
-						}
-					})
-					.catch(e => {
-						reject(e);
-					})
-			});
-		}
-	}
+	return {}
 }

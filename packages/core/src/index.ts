@@ -1,3 +1,4 @@
+import { ServiceKey } from '@ui-framework/ioc/.';
 import { Observable } from '@ui-framework/observable/dist/types';
 
 export { register as configure } from './startup/configurations'
@@ -6,8 +7,7 @@ export { register as provider } from './startup/providers';
 export { register as ready } from './startup/ready';
 export { register as service } from './startup/services';
 export { start } from './startup/start';
-// export { useModule } from './modules/useModule';
-// export { usePlugin } from './plugins/usePlugin';
+export { use } from './containers';
 
 // import { Injectable, InjectableFactory, ServiceKey } from '@ui-framework/ioc';
 

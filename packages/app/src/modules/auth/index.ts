@@ -1,11 +1,17 @@
 import { configure, provider } from '@ui-framework/core';
-import { createAuthService } from './services/createAuthService';
-import { createAuthProvider } from './services/createAuthProvider';
 import { auth } from './configure';
+import { GetMeResponse } from './model/exchange/GetMe';
+import { Authenticate, AuthContext, createAuthProvider } from '@ui-framework/auth';
+import { IHttpService } from '@ui-framework/http';
+
+provider('IAuthProvider', async (c) => {
+	const httpService: IHttpService = await c.resolve('IHttpService');
+	return createAuthProvider(httpService);
+});
 
 configure(auth);
-provider('IAuthService', () => createAuthService);
-provider('IAuthProvider', () => createAuthProvider);
 
-export declare interface IAuthProvider {}
-export declare interface IAuthService {}
+export declare type AuthState = {
+	isAuthenticated: boolean;
+	user: AuthContext;
+}

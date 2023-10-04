@@ -1,5 +1,5 @@
-import './HelloWorld.scss';
-import { h, ref, defineComponent } from 'vue';
+import './styles.scss';
+import { h, ref, defineComponent, Suspense } from 'vue';
 import { RouterLink } from 'vue-router';
 
 export default defineComponent({

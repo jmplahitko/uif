@@ -11,5 +11,5 @@ export const routes: RouteRecordRaw[] = [
 		meta: {
 			pageTitle: 'Home'
 		}
-	}
+	},
 ];

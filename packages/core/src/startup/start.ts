@@ -1,16 +1,21 @@
+import { copy } from '@ui-framework/utils';
+
 import { register as constant } from './constants';
 import { register as provider } from './providers';
 import { register as service } from './services';
 import { init as configure } from './configurations';
 import { init as ready } from './ready';
-import { copy } from '@ui-framework/utils';
 
+// TODO: leave these behind if they aren't needed
 import {
 	createHttpProvider,
 	httpServiceFactory,
 	createHttpRequestFactory
 } from '../http';
-import { createSettingsProvider, settingsFactory } from '../settings';
+import {
+	createSettingsProvider,
+	settingsFactory
+} from '../settings';
 
 let started = false;
 
