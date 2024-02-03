@@ -6,9 +6,7 @@ import './startup/configure/http';
 // import './startup/ready/testGetUser';
 import './startup/ready/vue';
 
-
 import './modules/auth';
-
 
 start({})
 	.catch((e) => {
