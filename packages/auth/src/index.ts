@@ -1,6 +1,12 @@
-import { IObservable } from '@ui-framework/core';
+import OidcResponseMode from './model/OidcResponseMode';
 
-export { createAuthProvider } from './services/createAuthProvider';
+export { createAuthService } from './services/createAuthService';
+
+export enum AuthRequestType {
+	credentials,
+	oauth,
+	oauthCallback
+}
 
 export const isCredentials = (auth: Authenticate): auth is Credentials => (
 	auth.type === AuthRequestType.credentials
@@ -14,27 +20,12 @@ export const isOAuthCallback = (auth: Authenticate): auth is OAuthCallback=> (
 	auth.type === AuthRequestType.oauthCallback
 )
 
-export declare interface IAuthProvider {
-	login(authenticate: Authenticate): Promise<AuthContext>;
-	logout(authenticate: Authenticate): Promise<AuthContext>;
-}
-
 export declare type AuthContext = {
 	provider?: string;
 	username?: string;
 	claims?: Record<string, string>;
 	oauthState?: Record<string, string>;
 	redirectUrl?: string;
-}
-
-// export declare type AuthState = {
-// 	context: AuthContext;
-// }
-
-export enum AuthRequestType {
-	credentials,
-	oauth,
-	oauthCallback
 }
 
 export declare type Credentials = {
@@ -65,3 +56,22 @@ export declare type Authenticate = {
 } & OAuth
 	| OAuthCallback
 	| Credentials;
+
+export declare interface IAuthService {
+	login(authenticate: Authenticate): Promise<AuthContext>;
+	logout(authenticate: Authenticate): Promise<AuthContext>;
+}
+
+export declare type AuthConfig = {
+	providers: Record<string, AuthProvider>;
+}
+
+export declare type AuthProvider = {
+	oidc: {
+		responseMode?: OidcResponseMode;
+		callbackUrl?: string;
+		initiateLoginUrl?: string;
+		loginCallbackUrl?: string;
+	},
+	returnUrl?: string;
+}

@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', async () => {
 		redirectUrl: ''
 	});
 
-	const provider: IAuthProvider = (await use('IAuthProvider'))[0];
+	const provider: IAuthProvider = await use('IAuthProvider')[0];
 	console.log(provider);
 	async function getMe() {
 		user = {

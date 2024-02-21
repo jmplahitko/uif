@@ -51,7 +51,7 @@ export default function observable<T extends object>(initialState: T): Observabl
 
 	const handler = <K extends {} | []>(key: string = ''): ProxyHandler<K> => ({
 		get(target, property, receiver) {
-			const value = Reflect.get(target, property, receiver);
+			const value = Reflect.get(target, property, receiver) as object;
 
 			if (target.hasOwnProperty(property)) {
 				const newValue = (typeof value === 'object' && Object.keys(value).length > 0)
