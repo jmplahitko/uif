@@ -1,5 +1,0 @@
-# `auth`
-
-> TODO: description
-
-## Usage

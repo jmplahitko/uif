@@ -7,8 +7,6 @@ import './startup/configure/http';
 import './startup/ready/vue';
 
 
-import './modules/auth';
-
 
 start({})
 	.catch((e) => {

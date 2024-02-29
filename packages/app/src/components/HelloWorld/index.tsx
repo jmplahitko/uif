@@ -38,8 +38,6 @@ export default defineComponent({
 					<a href="https://vitejs.dev/guide/features.html" target="_blank">Vite Docs</a> |
 					<a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
 				</p>
-
-				<RouterLink to={{ name: 'auth' }}>Sign In</RouterLink>
 			</div>
 		)
 	}

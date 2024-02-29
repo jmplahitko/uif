@@ -6,7 +6,6 @@
 	"dependencies": {
 		"@automapper/classes": "^8.7.7",
 		"@automapper/core": "^8.7.7",
-		"@ui-framework/auth": "^3.0.0",
 		"@ui-framework/core": "^3.0.0",
 		"@ui-framework/ioc": "^3.0.0",
 		"@ui-framework/http": "^3.0.0",
