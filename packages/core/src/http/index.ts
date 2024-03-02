@@ -21,7 +21,6 @@ export declare type HttpDefaults = {
 	}
 }
 
-
 export declare type HttpRouteDefinition<T = any, U = any> = {
 	key: HttpRouteKey<T, U>,
 	url: string,

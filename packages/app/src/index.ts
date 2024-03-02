@@ -6,9 +6,11 @@ import './startup/configure/http';
 // import './startup/ready/testGetUser';
 import './startup/ready/vue';
 
+const startupOptions: IStartupOptions = {
+	settings: {}
+}
 
-
-start({})
+start(startupOptions)
 	.catch((e) => {
 		console.log(e);
 	});
