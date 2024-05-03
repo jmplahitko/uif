@@ -4,14 +4,25 @@ import { createQueryString } from './createQueryString';
 
 export function generateUrl(url: string, method: HttpMethod, data: Record<string, any> = {}) {
 	let queryString;
-	let compiledUrl = compilePath(url, data);
+	let base = '';
+	let pathToParse = url;
+
+	if (isUrl(url)) {
+		const _url = new URL(url);
+		base = `${_url.protocol}//${_url.host}`;
+		pathToParse = _url.pathname;
+	}
+
+	const compiledUrl = compilePath(pathToParse, data);
 
 	if (simpleHttpMethods.includes(method)) {
-		const usedTokens = matchPath(url, compiledUrl);
+		const usedTokens = matchPath(pathToParse, compiledUrl);
 		const unusedTokens = prune(data, ...Object.keys(usedTokens))
 		queryString = createQueryString(unusedTokens);
-		url = `${url}${queryString}`;
+		url = `${pathToParse}${queryString}`;
 	}
+
+	url = `${base}${url}`;
 
 	return url;
 }
