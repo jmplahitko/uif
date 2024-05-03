@@ -2,7 +2,7 @@
 	"name": "@ui-framework/core",
 	"version": "3.0.0",
 	"description": "@ui-framework/core",
-	"author": "Joe Plahitko <joseph.plahitko@egov.com>",
+	"author": "Joe Plahitko <jmplahitko@icloud.com>",
 	"homepage": "",
 	"license": "ISC",
 	"type": "module",
@@ -10,14 +10,19 @@
 	"exports": {
 		".": "./dist/index.js",
 		"./http": "./dist/http/index.js",
-		"./navigation": "./dist/plugins/navigation/index.js",
-		"./settings": "./dist/settings/index.js"
+		"./resources": "./dist/resources/index.js",
+		"./runtime/using": "./dist/runtime/using.js",
+		"./settings": "./dist/settings/index.js",
+		"./startup": "./dist/startup/index.js"
 	},
 	"typesVersions": {
 		"*": {
-			"http": ["dist/plugins/http/index.d.ts"],
-			"navigation": ["dist/plugins/navigation/index.d.ts"],
-			"settings": ["dist/plugins/settings/index.d.ts"]
+			"*": ["dist/index.d.ts"],
+			"http": ["dist/http/index.d.ts"],
+			"resources": ["dist/resources/index.d.ts"],
+			"runtime/using": ["dist/runtime/using.d.ts"],
+			"settings": ["dist/settings/index.d.ts"],
+			"startup": ["dist/startup/index.d.ts"]
 		}
 	},
 	"files": [
