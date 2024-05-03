@@ -1,12 +1,11 @@
-import { ready, start } from '@ui-framework/core';
+import { ready, start } from '@ui-framework/core/startup';
 
 import './router';
 import './store';
 import './startup/configure/http';
-// import './startup/ready/testGetUser';
 import './startup/ready/vue';
 
-const startupOptions: IStartupOptions = {
+const startupOptions = {
 	settings: {}
 }
 

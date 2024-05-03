@@ -1,4 +1,4 @@
-import { provider, service } from '@ui-framework/core';
+import { provider, service } from '@ui-framework/core/startup';
 import { createPinia } from 'pinia';
 
 const store = createPinia();

@@ -1,4 +1,4 @@
-import { configure } from '@ui-framework/core';
+import { configure } from '@ui-framework/core/startup';
 import { IHttpProvider } from '@ui-framework/core/http';
 import { GetUser } from '../../model/users/exchange/GetUser';
 import { GetUserResponse } from '../../model/users/exchange/GetUserResponse';

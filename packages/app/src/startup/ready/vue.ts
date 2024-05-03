@@ -1,4 +1,4 @@
-import { ready } from '@ui-framework/core';
+import { ready } from '@ui-framework/core/startup';
 import { Pinia } from 'pinia';
 import { createApp } from 'vue';
 import { Router } from 'vue-router';

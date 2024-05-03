@@ -1,6 +1,7 @@
 import './styles.scss';
-import { h, ref, defineComponent, Suspense } from 'vue';
-import { RouterLink } from 'vue-router';
+import using from '@ui-framework/core/runtime/using';
+import { defineComponent } from 'vue';
+import { FileResource, ResourceType } from '@ui-framework/core/resources';
 
 export default defineComponent({
 	name: 'HelloWorld',
@@ -10,14 +11,18 @@ export default defineComponent({
 			required: true
 		}
 	},
-	setup: () => {
-		const count = ref(0)
-		return { count }
+	async setup() {
+		const logo = await using<FileResource>('/src/assets/logo.png', { resourceType: ResourceType.file });
+
+		return {
+			img: logo.objectUrl
+		}
 	},
 	render() {
 		return (
 			<div>
-				<h1>{ this.msg }</h1>
+				<img alt="Vue logo" src={this.img} />
+				<h1>{this.msg}</h1>
 				<p>
 					Recommended IDE setup:
 					<a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
