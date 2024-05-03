@@ -1,18 +1,36 @@
+import { ContentMimeType } from '@ui-framework/http';
 
-export type ImageResource = {
-	blob: Blob;
+export { createResourceProvider } from './createResourceProvider';
+
+export enum ResourceType {
+	file,
+	umd
+}
+
+export type FileResource = {
+	data: Blob;
+	mimeType: ContentMimeType;
 	objectUrl: string;
-	url: string
+	type: ResourceType.file;
+	url: string;
 }
 
-export type UmdResource<T> = {
-	resource: T;
+export type UmdResource = {
+	data: unknown;
 	script: HTMLScriptElement;
-	url: string
+	type: ResourceType.umd;
+	url: string;
 }
+
+export type Resource = {
+	data: unknown,
+	type: ResourceType;
+	url: string;
+} | FileResource
+	| UmdResource
 
 export declare interface IResourceProvider {
-	loadImage(url: string): Promise<ImageResource>;
-	loadUmd<T>(url: string): Promise<UmdResource<T>>;
+	loadFile(url: string): Promise<FileResource>;
+	loadUmd<T>(url: string): Promise<UmdResource>;
 	flush(): void;
 }

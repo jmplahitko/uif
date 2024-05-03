@@ -1,36 +1,49 @@
-import { IHttpService } from '@ui-framework/http';
+import { IHttpService, getContentTypeHeader } from '@ui-framework/http';
 import { isEmpty } from '@ui-framework/utils';
-import { IResourceProvider, ImageResource, UmdResource } from '.';
+import { IResourceProvider, FileResource, ResourceType, UmdResource } from './';
+import { Container } from '@ui-framework/ioc/.';
 
-export function createResourceProvider(http: IHttpService): IResourceProvider {
-	const umds: { [url: string]: UmdResource<unknown> } = {};
-	const images: { [url: string]: ImageResource } = {};
+export async function createResourceProvider(container: Container): Promise<IResourceProvider> {
+	const http = await container.resolve<IHttpService>('IHttpService');
+
+	const umds: { [url: string]: UmdResource } = {};
+	const files: { [url: string]: FileResource } = {};
 
 	// TODO: Move Promise generic parameter to a type for reuse.
-	async function loadImage(url: string): Promise<ImageResource> {
-		images[url] = images[url] ||
+	async function loadFile(url: string): Promise<FileResource> {
+		files[url] = files[url] ||
 			new Promise((resolve, reject) => {
-				if (!isEmpty(images[url])) {
-					resolve(images[url]);
+				if (!isEmpty(files[url])) {
+					resolve(files[url]);
 				} else {
 					http
 						.get<null, Blob>(url)
 						.then((response) => {
-							const blob = response.data ?? new Blob();
-							const objectUrl = URL.createObjectURL(blob);
-							resolve({ blob, objectUrl, url });
+							const data = response.data ?? new Blob();
+							const objectUrl = URL.createObjectURL(data);
+							const mimeType = getContentTypeHeader(response.response ?? new Response());
+
+							files[url] = {
+								data,
+								objectUrl,
+								url,
+								mimeType,
+								type: ResourceType.file
+							};
+
+							resolve(files[url]);
 						})
 						.catch((err) => {
-							delete images[url];
+							delete files[url];
 							reject(err);
 						});
 				}
 			});
 
-		return images[url];
+		return files[url];
 	}
 
-	async function loadUmd<T>(url: string): Promise<UmdResource<T>> {
+	async function loadUmd(url: string): Promise<UmdResource> {
 		const fileNameSegment = url
 			.split(`/`)
 			.reverse()[0]
@@ -50,12 +63,15 @@ export function createResourceProvider(http: IHttpService): IResourceProvider {
 			const script = document.createElement(`script`);
 			script.async = true;
 			script.addEventListener(`load`, () => {
-				umds[name] = { resource: window[name], script, url };
-				// this._logger.log(`{ResourceCache} - ${url} loaded!`);
+				umds[name] = {
+					data: window[name],
+					script,
+					type: ResourceType.umd,
+					url
+				};
 				resolve(window[name]);
 			});
 			script.addEventListener(`error`, (err) => {
-				// this._logger.error(`{ResourceCache} - Failed to load ${url}`, err);
 				document.head.removeChild(script);
 				delete window[name];
 				reject(err);
@@ -77,7 +93,7 @@ export function createResourceProvider(http: IHttpService): IResourceProvider {
 	}
 
 	return {
-		loadImage,
+		loadFile,
 		loadUmd,
 		flush
 	}
