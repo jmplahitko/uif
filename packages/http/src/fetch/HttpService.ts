@@ -98,7 +98,7 @@ export function createHttpService({ defaultRequestOptions, interceptors }): IHtt
 	http.put = shorthandRequestMethodWithBody(HttpMethod.put);
 
 	function shorthandRequestMethod(method: HttpMethod) {
-		return function<T, U>(url: string, data?: T, options?: TRequestOptions) {
+		return function <T, U>(url: string, data?: T, options?: TRequestOptions) {
 			return http<T, U>({
 				data,
 				method,
@@ -109,7 +109,7 @@ export function createHttpService({ defaultRequestOptions, interceptors }): IHtt
 	}
 
 	function shorthandRequestMethodWithBody(method: HttpMethod) {
-		return function<T, U>(url: string, data: T, options?: TRequestOptions) {
+		return function <T, U>(url: string, data: T, options?: TRequestOptions) {
 			return http<T, U>({
 				data,
 				method,

@@ -14,6 +14,7 @@ export declare type ResponseDetails<T, U> = {
 	data: U | null;
 	error?: Error;
 	request: RequestDetails<T>;
+	response: Response | null;
 	responseContentType: ResponseContentType;
 	status: HttpStatusCode;
 	statusText: string;
@@ -32,3 +33,4 @@ export { default as ContentMimeType } from './ContentMimeType';
 export { default as HttpError } from './HttpError';
 export { HttpMethod, simpleHttpMethods } from './HttpMethod';
 export { default as HttpStatusCode } from './HttpStatusCode';
+export { getContentTypeHeader } from './helpers/getContentTypeHeader';

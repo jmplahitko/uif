@@ -4,13 +4,12 @@ import ResponseContentType from '../ResponseContentType';
 import HttpError from '../../HttpError';
 import HttpStatusCode from '../../HttpStatusCode';
 import { IResponseParsingStrategyFactory } from '../responseParsingStrategies/IResponseParsingStrategyFactory';
+import { getContentTypeHeader } from '../../helpers/getContentTypeHeader';
 
 export const prepareResponseDetails = (responseParsingStrategyFactory: IResponseParsingStrategyFactory) => <T, U>(request: RequestDetails<T>, response?: Response, responseContentType?: ResponseContentType): Promise<ResponseDetails<T, U>> => {
 	if (response) {
 		const responseClone = response.clone();
-		const mimeType = response.headers.has('Content-Type')
-			? (response.headers.get('Content-Type') as string).split(';')[0]
-			: ContentMimeType.textualDefault;
+		const mimeType = getContentTypeHeader(response);
 		const fallbackResponseParsingStrategy = responseParsingStrategyFactory.getStrategyFor(ResponseContentType.default);
 		let strategy = responseContentType
 			? responseParsingStrategyFactory.getStrategyFor(responseContentType)
@@ -41,6 +40,7 @@ export const prepareResponseDetails = (responseParsingStrategyFactory: IResponse
 				status: parsedResponse.status,
 				statusText: parsedResponse.statusText,
 				request,
+				response,
 				url: request.url
 			}
 
@@ -60,6 +60,7 @@ export const prepareResponseDetails = (responseParsingStrategyFactory: IResponse
 			status: HttpStatusCode.none,
 			statusText: '',
 			request,
+			response: null,
 			url: request.url
 		};
 
